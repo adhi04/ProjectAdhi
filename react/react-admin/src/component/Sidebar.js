@@ -37,13 +37,7 @@ class Sidebar extends Component {
               <li><Link to="/editcategory">Edit Category</Link></li>
             </ul>
           </li>
-          <li><a href="#exampledropdownDropdownprod" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Product </a>
-            <ul id="exampledropdownDropdownprod" className="collapse list-unstyled ">
-              <li><Link to="/allproduct">All Products</Link></li>
-              <li><Link to="/addproduct">Add Product</Link></li>
-              <li><Link to="/editdata">Edit Product</Link></li>
-            </ul>
-          </li>
+          <li><Link to = "/allproduct"> <i className="icon-interface-windows" />Product </Link></li>
           <li><a href="#exampledropdownDropdowninv" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Invoice </a>
             <ul id="exampledropdownDropdowninv" className="collapse list-unstyled ">
               <li><Link to="/allinv">All Invoices</Link></li>

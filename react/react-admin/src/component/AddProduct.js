@@ -5,14 +5,44 @@ import Footer from './Footer';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
+
+
 class AddProduct extends Component {
-  tambahData = (e) => {
-    axios.post(`http://localhost:8000/tambahData`, {
-        inputSatu: e.namaproduk.value,
-        inputDua: e.hargaproduk.value
-      });
+
+  state = {
+    
+    namaproduk: '',
+    harga: '',
+    foto: '',
 }
 
+    onchange = (e) => {
+      switch(e.target.name){
+        case 'fotoproduk':
+        this.setState({
+          foto:e.target.files[0],
+        });
+        break;
+      }
+    }
+
+
+    value = (e) => {
+      this.setState({
+        namaproduk: e.namaproduk.value,
+        hargaproduk: e.hargaproduk.value
+      });
+    }
+
+    tambahData = (e) => {
+      e.preventDefault();
+      // 9. new form data seperti gudang/library. karena didalam form maka menggunakan append. kenapa menggunakan state karena state dia tas sudah diganti
+      let formData = new FormData();
+      formData.append('file', this.state.foto);
+      formData.append('namaproduk', this.state.namaproduk);
+      formData.append('harga', this.state.hargaproduk);
+      axios.post('http://localhost:8002/tambahData/', formData);
+    }
   render() {
     return (
 
@@ -87,10 +117,47 @@ class AddProduct extends Component {
             </section>
             {/* Dashboard Header Section    */}
             <section className="dashboard-header">
-              <div className="container-fluid">
-                <div className="content-wrapper">
+              <div className="container-fluid ">
+                <div className="p-3 bg-white has-shadow">
+
+                <form onSubmit={this.tambahData} encType="multipart/form-data">
+            
+                <legend>Tambah Data</legend>
+                <hr/>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">Nama Produk</label>
+                    <div className="col-lg-10">
+                        <input ref="namaproduk" type="text" className="form-control" placeholder="Nama produk ..." />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">Harga</label>
+                    <div className="col-lg-10">
+                        <input ref="hargaproduk" type="text" className="form-control"  placeholder="Harga produk ..." />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                        <label className="col-lg-2 control-label">Foto Produk</label>
+                        <div className="col-lg-10">
+                            <input name="fotoproduk" onChange={this.onchange} type="file" className="form-control-file"  />
+                        </div>
+                    </div>
+
+                <div className="form-group">
+                    <div className="col-lg-10 col-lg-offset-2">
+                        <button type="reset" className="btn btn-default">Cancel</button>&nbsp;
+                        <button type="submit" onClick={() => this.value(this.refs)} className="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+
+            
+        </form>
+
+                {/* <div className="content-wrapper">
                   <div className="container-fluid">
-                    {/* Breadcrumbs*/}
+                    
                     <div className="container-fluid">
                       <div className="row">
                         <div className="col-lg-3 ">
@@ -108,17 +175,17 @@ class AddProduct extends Component {
                                 </div>
                               </div>
                               <div className="form-group row">
-                                <label className="col-sm-2 form-control-label">Kategori Hewan</label>
+                                <label className="col-sm-2 form-control-label">Kategori</label>
                                 <div className="col-sm-10">
                                   <input type="text" placeholder="Kategori" className="form-control" />
                                 </div>
                               </div>
-                              {/* <div className="form-group row">
+                              <div className="form-group row">
                                 <label className="col-sm-2 form-control-label">Upload Gambar</label>
                                 <div className="col-sm-10">
                                   <input type="file" placeholder="Gambar" className="form-control" />
                                 </div>
-                              </div> */}
+                              </div>
                               <div className="form-group row">
                                 <label className="col-sm-2 form-control-label">Harga</label>
                                 <div className="col-sm-10">
@@ -135,7 +202,7 @@ class AddProduct extends Component {
                               <div className="card-body text-center">
                                 <button type="button" data-toggle="modal" data-target="#myModal" className="btn btn-primary">Add</button>
                                 <button type="button" data-toggle="modal" ref="#myModal" className="btn btn-danger">Delete</button>
-                                {/* Modal*/}
+                                
                                 <div id="myModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" className="modal fade text-left">
                                   <div role="document" className="modal-dialog">
                                     <div className="modal-content">
@@ -148,7 +215,7 @@ class AddProduct extends Component {
                                       </div>
                                       <div className="modal-footer">
                                         <button type="button" data-dismiss="modal" className="btn btn-secondary">Close</button>
-                                        <button type="button" onClick={() => this.tambahData(this.refs)} className="btn btn-primary">Save changes</button>
+                                        <button type="button" className="btn btn-primary">Save changes</button>
                                       </div>
                                     </div>
                                   </div>
@@ -156,7 +223,9 @@ class AddProduct extends Component {
                               </div>
                             </div>
                           </form></div>
-                      </div></div></div></div></div></section>
+                      </div></div></div></div> */}
+                      </div>
+                      </div></section>
             {/* Page Footer*/}
            
                   

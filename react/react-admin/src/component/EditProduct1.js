@@ -2,40 +2,10 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import axios from 'axios'
 import {Link} from 'react-router-dom';
 
 class EditProduct extends Component {
-
-  state= {
-    id: '',
-    namaproduk:'',
-    harga: '',
-  }
-
-componentDidMount(){
-    var id = this.props.location.state.produkID;
-    axios
-        .get('http://localhost:8000/editdata/'+id)
-        .then((hasilAmbil) => {
-            console.log(hasilAmbil);
-            this.setState({
-                id: hasilAmbil.data[0].id,
-                namaproduk: hasilAmbil.data[0].nama_produk,
-                harga: hasilAmbil.data[0].harga,
-            })
-        })
-    }
-    updateData = (e) =>{
-        axios.post('http://localhost:8000/ubahData/', {
-            id: e.idproduk.value,
-            namaproduk:e.namaproduk.value,
-            harga: e.hargaproduk.value
-        })
-    }
-
   render() {
-
     return (
 
         <div className="page">
@@ -123,35 +93,34 @@ componentDidMount(){
                               <center><h3 className="text-danger">Form Edit Produk</h3></center>
                               <hr />
                               <div className="form-group row">
-                                <input type= "hidden" className="form-control" ref = 'idproduk' defaultValue={this.state.id}/>
                                 <label className="col-sm-2 form-control-label">Nama Produk</label>
                                 <div className="col-sm-10">
-                                  <input ref="namaproduk" type="text" placeholder="Nama" className="form-control" />
+                                  <input type="text" placeholder="Nama" className="form-control" />
                                 </div>
                               </div>
                               <div className="form-group row">
                                 <label className="col-sm-2 form-control-label">Kategori</label>
                                 <div className="col-sm-10">
-                                  <input ref="ketegoriproduk" type="text" placeholder="Kategori" className="form-control" />
+                                  <input type="text" placeholder="Kategori" className="form-control" />
                                 </div>
                               </div>
-                              {/* <div className="form-group row">
+                              <div className="form-group row">
                                 <label className="col-sm-2 form-control-label">Upload Gambar</label>
                                 <div className="col-sm-10">
                                   <input type="file" placeholder="Gambar" className="form-control" />
                                 </div>
-                              </div> */}
+                              </div>
                               <div className="form-group row">
                                 <label className="col-sm-2 form-control-label">Harga</label>
                                 <div className="col-sm-10">
-                                  <input ref="hargaproduk" type="number" placeholder="Harga" className="form-control" />
+                                  <input type="number" placeholder="Harga" className="form-control" />
                                 </div>
                               </div>
                               <div className="input-group">
                                 <div className="input-group-prepend">
                                   <span className="input-group-text">Deskripsi</span>
                                 </div>
-                                <textarea ref="deskripsi" className="form-control" aria-label="With textarea" defaultValue={""} />
+                                <textarea className="form-control" aria-label="With textarea" defaultValue={""} />
                               </div><br />
                               <div className="card-body text-center">
                                 <button type="button" data-toggle="modal" data-target="#myModal" className="btn btn-primary">Save</button>

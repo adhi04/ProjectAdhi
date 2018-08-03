@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+// import { connect } from 'react-redux';
+
 
 class AllProduct extends Component {
+
     state = {
         dataproduk: [],
+        redirect: false
     }
     componentDidMount(){
-        axios.get(`http://localhost:8000/`).then(
+        axios.get(`http://localhost:8002/`).then(
             /** Disini fungsi */
             (ambilData) => {
                 console.log(ambilData.data);
@@ -22,24 +26,25 @@ class AllProduct extends Component {
     }
 
   render() {
-    const hasil = this.state.dataproduk.map(
-        (isi, urutan) => {
-            var urut = urutan + 1;
-            var produkID = isi.id;
-            var namaproduk = isi.nama_produk;
-            var hargaproduk = isi.harga;
 
-            return <tr key={urutan} style={{textAlign: 'center'}}>
-            <td>{urut}</td>
-            <td>{namaproduk}</td>
-            <td>{hargaproduk}</td>
-            <td>
-                {/* kenapa link to gak pake kutip aja soalnya kita mau ambil nilai yang sifatnya dinamis */}
-                <Link to={{pathname:'/editdata/', state: {produkID: produkID}}} className="btn btn-warning btn-md">Edit</Link>&nbsp;
-                <button className="btn btn-danger btn-md">Delete</button>
-            </td>
-        </tr>
-        }
+    const hasil = this.state.dataproduk.map(
+      (isi, urutan) => {
+          var urut = urutan + 1;
+          var produkID = isi.id;
+          var namaproduk = isi.nama_produk;
+          var hargaproduk = isi.harga;
+           
+          return <tr key={urutan} style={{textAlign: 'center'}}>
+          <td>{urut}</td>
+          <td>{namaproduk}</td>
+          <td>{hargaproduk}</td>
+          <td>
+              {/* kenapa link to gak pake kutip aja soalnya kita mau ambil nilai yang sifatnya dinamis */}
+              <Link to={{pathname:'/editdata/', state: {produkID: produkID}}} className="btn btn-warning btn-md">Edit</Link>&nbsp;
+              <button className="btn btn-danger btn-md">Delete</button>
+          </td>
+      </tr>
+      }
     );
 
     return (
@@ -116,20 +121,23 @@ class AllProduct extends Component {
             <section className="dashboard-header">
               <div className="container-fluid">
 
-                <table className="table table-striped table-hover table-bordered">
-                    <thead>
-                        <tr>
-                        <th style={{textAlign: 'center'}}>Nomor</th>
-                        <th style={{textAlign: 'center'}}>Nama Produk</th>
-                        <th style={{textAlign: 'center'}}>Harga Produk</th>
-                        <th style={{textAlign: 'center'}}>Actions</th>
-                        </tr>
-                    </thead>
-                <tbody>
-                    {hasil}
-                </tbody>
-                </table>
+              <div className="row bg-white has-shadow">
 
+                <table className="table table-striped table-hover table-bordered">
+                  <thead>
+                      <tr>
+                          <th style={{textAlign: 'center'}}>Nomor</th>
+                          <th style={{textAlign: 'center'}}>Nama Produk</th>
+                          <th style={{textAlign: 'center'}}>Harga Produk</th>
+                          <th style={{textAlign: 'center'}}>Actions &nbsp;&nbsp;&nbsp;<Link to="/tambahdata" className="btn btn-primary btn-sm">Add</Link></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {hasil}
+                  </tbody>
+                  </table>
+                        
+              </div>
                 {/* <div className="row">
                   <div className="col-md-3">                                                
                     <div className="container-fluid sticky-top form-inline">
