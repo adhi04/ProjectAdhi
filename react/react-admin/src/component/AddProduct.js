@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
+
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 
 
@@ -12,9 +13,31 @@ class AddProduct extends Component {
   state = {
     
     namaproduk: '',
+    kategori: [],
+    kategoriID: '',
     harga: '',
     foto: '',
+    redirect: false
 }
+
+
+
+componentDidMount(){
+  axios.get('http://localhost:8002/AddCategory').then(
+      (ambilData) => {
+          // console.log(ambilData.data);
+          console.log(ambilData.data[0]);
+          console.log(ambilData.data[1]);
+          this.setState({
+            kategori: ambilData.data,
+            // listukuran: ambilData.data[1]
+              
+          });
+      }
+  )
+}
+
+
 
     onchange = (e) => {
       switch(e.target.name){
@@ -27,12 +50,26 @@ class AddProduct extends Component {
     }
 
 
+    // value = (e) => {
+    //   this.setState({
+    //     namaproduk: e.namaproduk.value,
+    //     kategori: e.kategori.value,
+    //     hargaproduk: e.hargaproduk.value
+    //   });
+    // }
+
     value = (e) => {
-      this.setState({
-        namaproduk: e.namaproduk.value,
-        hargaproduk: e.hargaproduk.value
-      });
-    }
+      var kategoriID = e.kategori.value;
+      var namaproduk = e.namaproduk.value;
+      var hargaproduk = e.hargaproduk.value;
+    
+  
+            this.setState({
+              kategoriID: kategoriID,
+              namaproduk: namaproduk,
+              hargaproduk: hargaproduk,
+            }) 
+          }
 
     tambahData = (e) => {
       e.preventDefault();
@@ -40,10 +77,40 @@ class AddProduct extends Component {
       let formData = new FormData();
       formData.append('file', this.state.foto);
       formData.append('namaproduk', this.state.namaproduk);
+      formData.append('kategori', this.state.kategoriID);
       formData.append('harga', this.state.hargaproduk);
-      axios.post('http://localhost:8002/tambahData/', formData);
-    }
+      
+      axios.post('http://localhost:8002/tambahData/', formData).then((hasil) => {
+        var respon = hasil.data;
+        console.log(respon) 
+        if(respon === 1) 
+        {
+          this.setState({
+            redirect: true
+          })
+        }
+    })
+  }
   render() {
+
+    if (this.state.redirect) return <Redirect to="/allproduct" />
+
+    // const listukuran = this.state.listukuran.map((item, index) => {
+      
+    //   var itemID = item.id;
+    //   var nameSize = item.size_name; 
+    //   return <option key={index} value={itemID}>{nameSize}</option>
+      
+    // }) 
+    const kategori = this.state.kategori.map((item, index) => {
+      
+      var itemID = item.categoryID;
+      var nameCategory = item.foodcategory; 
+      return <option key={index} value={itemID}>{nameCategory}</option>
+      
+    })
+     
+
     return (
 
         <div className="page">
@@ -126,14 +193,31 @@ class AddProduct extends Component {
                 <hr/>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">Nama Produk</label>
-                    <div className="col-lg-10">
+                    <div className="col-lg-12">
                         <input ref="namaproduk" type="text" className="form-control" placeholder="Nama produk ..." />
                     </div>
                 </div>
 
+                {/* <div>
+                  <label htmlFor="country">Category</label>
+                  <select ref="kategori" className="form-control square" id="category">
+                    {kategori}
+                  </select>
+                </div> */}
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">Kategori Makanan</label>
+                    <div className="col-lg-12">
+                        <select ref="kategori" className="form-control" id="category">
+                        {kategori}
+                        </select>
+                    </div>
+                </div>
+                
+
                 <div className="form-group">
                     <label className="col-lg-2 control-label">Harga</label>
-                    <div className="col-lg-10">
+                    <div className="col-lg-12">
                         <input ref="hargaproduk" type="text" className="form-control"  placeholder="Harga produk ..." />
                     </div>
                 </div>

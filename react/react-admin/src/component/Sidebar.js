@@ -4,7 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import AddCategory from './AddCategory';
 import AddProduct from './AddProduct';
-import AllCategories from './AllCategories';
+import Kategori from './Kategori';
 import AllInv from './AllInv';
 import AllProduct from './AllProduct';
 import EditCat from './EditCat';
@@ -30,12 +30,12 @@ class Sidebar extends Component {
         <ul className="list-unstyled">
           <li className="active"><Link to="/"> <i className="icon-home" />Home </Link></li>
     
-          <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Category </a>
-            <ul id="exampledropdownDropdown" className="collapse list-unstyled ">
-              <li><Link to="/allcategories">All Categories</Link></li>
+          <li><Link to="/kategori"> <i className="icon-interface-windows" />Category </Link>
+            {/* <ul id="exampledropdownDropdown" className="collapse list-unstyled ">
+              <li><Link to="/kategori">All Categories</Link></li>
               <li><Link to="/addcategory">Add Category</Link></li>
               <li><Link to="/editcategory">Edit Category</Link></li>
-            </ul>
+            </ul> */}
           </li>
           <li><Link to = "/allproduct"> <i className="icon-interface-windows" />Product </Link></li>
           <li><a href="#exampledropdownDropdowninv" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Invoice </a>

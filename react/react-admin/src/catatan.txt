@@ -1,0 +1,6 @@
+cara buat fungsi delete
+
+1. tambahkan onclick pada button delete. onClick={() => this.deleteData(produkID)}
+2. buat function deletedata dibawah class diatas render
+3. pindah ke BE. buat fungsi app post kirim perintah query ke database
+4. res send sinyal berhasil(1) untuk dibuat redirect

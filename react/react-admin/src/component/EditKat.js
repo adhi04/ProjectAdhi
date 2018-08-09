@@ -6,14 +6,37 @@ import axios from 'axios';
 import {Link, Redirect} from 'react-router-dom';
 
 class AddCategory extends Component {
-
+  
   state = {
     redirect: false,
+    kategoriid: '',
+    kategorinama: "",
 }
-  value = (e) => {
-    axios.post(`http://localhost:8002/AddCategory`, {
-        inputCategory: e.catfoot.value,
-      }).then(
+
+componentDidMount(){
+    var idkat = this.props.location.state.catID;
+    var namakat = this.props.location.state.namakat;
+    console.log(namakat)
+    this.setState({
+        kategoriid: idkat,
+        kategorinama: namakat,
+    });
+}
+
+change = (e) => {
+    this.setState({
+        kategorinama: e.target.value
+    })
+}
+
+
+  editData = (e) => {
+    axios.post(`http://localhost:8002/EditCategory`, {
+        inputid: e.idkat.value,
+        inputnama: e.namakat.value,
+        
+      }) 
+      .then(
         (ambilData) => {
             console.log(ambilData.data);
             if (ambilData.data === 1) {
@@ -23,7 +46,8 @@ class AddCategory extends Component {
             }
            
           })
-          console.log(e.catfoot.value)
+          console.log(e.idkat.value)
+          console.log(e.namakat.value)
         }
   render() {
 
@@ -122,22 +146,23 @@ class AddCategory extends Component {
               <div className="container-fluid ">
                 <div className="p-3 bg-white has-shadow">
 
-                <form onSubmit={this.tambahData} encType="multipart/form-data">
+                <form>
             
-                <legend>Tambah Kategori</legend>
+                <legend>Edit Kategori</legend>
                 <hr/>
+                <input type="text" className="form-control" ref="idkat" value={this.state.kategoriid}/>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">Kategori Makanan</label>
                     <div className="col-lg-12">
-                        <input ref="catfoot" type="text" className="form-control" placeholder="Nama produk ..." />
+                        <input ref="namakat" type="text" className="form-control" value={this.state.kategorinama} onChange={this.change}  />
                     </div>
-                </div>
+                </div> 
 
                 <div className="form-group">
                     <div className="col-lg-10 col-lg-offset-2">
                         <button type="reset" className="btn btn-default">Cancel</button>&nbsp;
-                        <Link to="#" type="button" onClick={() => this.value(this.refs)} className="btn btn-primary">
-                          ADD
+                        <Link to="#" type="button" onClick={() => this.editData(this.refs)} className="btn btn-primary">
+                          EDIT
                         </Link>
                         {/* <button type="submit" onClick={() => this.value(this.ref="catfoot")} className="btn btn-primary">Submit</button> */}
                     </div>

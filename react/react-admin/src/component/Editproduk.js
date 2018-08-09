@@ -3,13 +3,15 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 class Editproduk extends Component {
 
     state = {
         id: '',
         namaproduk: '',
+        kategori: [],
+        kategoriID: '',
         harga: '',
         foto: '',
     }
@@ -21,13 +23,28 @@ class Editproduk extends Component {
             (hasilAmbil) => {
             console.log(hasilAmbil.data);
             this.setState({
-                id: hasilAmbil.data[0].id,
+                id: hasilAmbil.data[0].productID,
                 namaproduk: hasilAmbil.data[0].nama_produk,
+                // kategori: hasilAmbil.data[0].categoryID,
                 harga: hasilAmbil.data[0].harga
             });
             
         }
         );
+
+        axios.get('http://localhost:8002/AddCategory').then(
+            (ambilData) => {
+                // console.log(ambilData.data);
+                console.log(ambilData.data[0]);
+                console.log(ambilData.data[1]);
+                this.setState({
+                  kategori: ambilData.data,
+                  // listukuran: ambilData.data[1]
+                    
+                });
+            }
+        )
+
     }
   //   3. dibagian input file (jika terjadi perubahan maka akan dijalankan fungsi 'onchange')
     onchange = (e) => {
@@ -44,10 +61,15 @@ class Editproduk extends Component {
   
   //   6. value kita dapat dari bawah, function buttonnya (submit). ketika di klik submitnya value akan di update
     value = (e) => {
+
+      var kategoriID = e.kategori.value;
+      var namaproduk = e.namaproduk.value;
+      var hargaproduk = e.hargaproduk.value;
+
       this.setState({
-          id: e.idproduk.value,
-          namaproduk: e.namaproduk.value,
-          hargaproduk: e.hargaproduk.value
+          kategoriID: kategoriID,
+          namaproduk: namaproduk,
+          hargaproduk: hargaproduk,
       })
     }
   
@@ -59,6 +81,7 @@ class Editproduk extends Component {
       formData.append('file', this.state.foto);
       formData.append('id', this.state.id);
       formData.append('namaproduk', this.state.namaproduk);
+      formData.append('kategori', this.state.kategoriID);
       formData.append('harga', this.state.hargaproduk);
   
       // axios.post('http://localhost:8002/ubahData/', {
@@ -67,11 +90,38 @@ class Editproduk extends Component {
       //     harga: e.hargaproduk.value,
       //     foto_produk: e.fotoproduk.value
       // });
-      axios.post('http://localhost:8002/ubahData/', formData);
+      axios.post('http://localhost:8002/ubahData/', formData).then((hasil) => {
+        var respon = hasil.data;
+        console.log(respon) 
+        if(respon === 1) 
+        {
+          this.setState({
+            redirect: true
+          })
+        }
+    })
     }
 
 
   render() {
+
+    if (this.state.redirect) return <Redirect to="/allproduct" />
+
+    // const listukuran = this.state.listukuran.map((item, index) => {
+      
+    //   var itemID = item.id;
+    //   var nameSize = item.size_name; 
+    //   return <option key={index} value={itemID}>{nameSize}</option>
+      
+    // }) 
+    const kategori = this.state.kategori.map((item, index) => {
+      
+      var itemID = item.categoryID;
+      var nameCategory = item.foodcategory; 
+      return <option key={index} value={itemID}>{nameCategory}</option>
+      
+    })
+
     return (
 
         <div className="page">
@@ -154,14 +204,23 @@ class Editproduk extends Component {
                     <input type="hidden" className="form-control" ref="idproduk" Value={this.state.id}/>
                     <div className="form-group">
                         <label className="col-lg-2 control-label">Nama Produk</label>
-                        <div className="col-lg-10">
+                        <div className="col-lg-12">
                             <input ref="namaproduk" type="text" className="form-control" Value={this.state.namaproduk} placeholder="Nama produk ..." />
                         </div>
                     </div>
 
                     <div className="form-group">
+                      <label className="col-lg-2 control-label">Category</label>
+                      <div className="col-lg-12">
+                      <select ref="kategori" className="form-control" id="category">
+                        {kategori}
+                      </select>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
                         <label className="col-lg-2 control-label">Harga</label>
-                        <div className="col-lg-10">
+                        <div className="col-lg-12">
                             <input ref="hargaproduk" type="text" className="form-control"  Value={this.state.harga} placeholder="Harga produk ..." />
                         </div>
                     </div>
