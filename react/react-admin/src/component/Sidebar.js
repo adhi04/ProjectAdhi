@@ -28,7 +28,7 @@ class Sidebar extends Component {
         </div>
         {/* Sidebar Navidation Menus*/}<span className="heading">Main</span>
         <ul className="list-unstyled">
-          <li className="active"><Link to="/"> <i className="icon-home" />Home </Link></li>
+          <li className="active"><Link to="/homepage"> <i className="icon-home" />Home </Link></li>
     
           <li><Link to="/kategori"> <i className="icon-interface-windows" />Category </Link>
             {/* <ul id="exampledropdownDropdown" className="collapse list-unstyled ">

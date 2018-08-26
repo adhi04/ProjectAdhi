@@ -82,7 +82,7 @@ class Header extends Component {
                   </ul>
                 </li>
                 {/* Logout    */}
-                <li className="nav-item"><Link to="/login" className="nav-link logout"> <span className="d-none d-sm-inline">Logout</span><i className="fa fa-sign-out" /></Link></li>
+                <li className="nav-item"><Link to="/logout" className="nav-link logout"> <span className="d-none d-sm-inline">Logout</span><i className="fa fa-sign-out" /></Link></li>
               </ul>
             </div>
           </div>

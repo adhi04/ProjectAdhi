@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies()
 
 class Main extends Component {
   render() {
+    if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     return (
         <div className="page">
             <Header/>

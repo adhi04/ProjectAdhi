@@ -4,6 +4,10 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import axios from 'axios';
 import {Link, Redirect} from 'react-router-dom';
+import Cookies from 'universal-cookie';
+// import { connect } from 'react-redux';
+const cookies = new Cookies()
+
 
 class AddCategory extends Component {
 
@@ -26,7 +30,7 @@ class AddCategory extends Component {
           console.log(e.catfoot.value)
         }
   render() {
-
+    if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     if (this.state.redirect) return <Redirect to="/kategori" />
 
     // const listukuran = this.state.listukuran.map((item, index) => {

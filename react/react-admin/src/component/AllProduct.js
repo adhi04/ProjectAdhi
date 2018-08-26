@@ -3,9 +3,10 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
+import Cookies from 'universal-cookie';
 // import { connect } from 'react-redux';
-
+const cookies = new Cookies()
 
 class AllProduct extends Component {
 
@@ -48,14 +49,16 @@ class AllProduct extends Component {
           }
 
   render() {
-
+    if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     const hasil = this.state.dataproduk.map(
       (isi, urutan) => {
           var urut = urutan + 1;
           var produkID = isi.productID;
           var namaproduk = isi.nama_produk;
-          var kategori = isi.categoryID;
+          // var kategori = isi.categoryID;
+          var kategori = isi.foodcategory;
           var hargaproduk = isi.harga;
+          var detail = isi.detailproduk;
           var fotoproduk = isi.foto_produk;
            
           return <tr key={urutan} style={{textAlign: 'center'}}>
@@ -63,6 +66,7 @@ class AllProduct extends Component {
           <td>{namaproduk}</td>
           <td>{kategori}</td>
           <td>{hargaproduk}</td>
+          <td>{detail}</td>
           <td>{fotoproduk}</td>
           <td>
               {/* kenapa link to gak pake kutip aja soalnya kita mau ambil nilai yang sifatnya dinamis */}
@@ -146,18 +150,20 @@ class AllProduct extends Component {
             {/* Dashboard Header Section    */}
             <section className="dashboard-header">
               <div className="container-fluid">
-
+              <div style={{textAlign:'center', padding: 20}}>
+              <Link to="/tambahdata" className="btn btn-primary btn-m">Add Product</Link>
+              </div>
               <div className="row bg-white has-shadow">
-
                 <table className="table table-striped table-hover table-bordered">
                   <thead>
-                      <tr>
+                      <tr className="table-striped table-secondary" >
                           <th style={{textAlign: 'center'}}>Nomor</th>
                           <th style={{textAlign: 'center'}}>Nama Produk</th>
                           <th style={{textAlign: 'center'}}>Kategori Makanan</th>
                           <th style={{textAlign: 'center'}}>Harga Produk</th>
+                          <th style={{textAlign: 'center'}}>Deskripsi Produk</th>
                           <th style={{textAlign: 'center'}}>Foto Produk</th>
-                          <th style={{textAlign: 'center'}}>Actions &nbsp;&nbsp;&nbsp;<Link to="/tambahdata" className="btn btn-primary btn-sm">Add</Link></th>
+                          <th style={{textAlign: 'center'}}>Actions </th>
                       </tr>
                   </thead>
                   <tbody>

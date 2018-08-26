@@ -23,10 +23,10 @@ app.use(upload());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
+app.use('/tampunganFile', express.static('tampunganFile'));
 
 app.get('/', (req, res) => {
-    var panggilData = 'SELECT * FROM  productlist';
+    var panggilData = 'SELECT productID, nama_produk, foodcategory, harga, detailproduk, foto_produk FROM productlist INNER JOIN categorytbl ON productlist.categoryID = categorytbl.categoryID';
     dbs.query(panggilData, (kaloError, hasilQuery) => {
         if(kaloError)
         {
@@ -93,7 +93,7 @@ app.get('/AddCategory', (req, res) => {
 
 app.post('/AddCategory', (req, res) => {
     var catfoot = req.body.inputCategory;
-    console.log(catfoot)
+    // console.log(catfoot)
     var sql = `INSERT INTO categorytbl VALUES("${''}", "${catfoot}")`;
     dbs.query(sql, (kaloError, hasilnya) => {
         if(kaloError){
@@ -107,26 +107,28 @@ app.post('/AddCategory', (req, res) => {
 
 app.post('/tambahData', (req, res) => {
 // ambil paramater dari fe, eg: namaproduk, harga, file
+
 var namaProduk = req.body.namaproduk;
 var Kategori = req.body.kategori;
 var hargaProduk = req.body.harga;
+var detailProduk = req.body.detailproduk;
 
 
-// console.log(namaProduk);
-// console.log(Kategori);
-// console.log(hargaProduk);
-// console.log(fileName);
+console.log(namaProduk);
+console.log(Kategori);
+console.log(hargaProduk);
+console.log(detailProduk);
 if (req.files){
        var fungsiFile= req.files.file;
        var fileName = req.files.file.name;
 
        fungsiFile.mv("./tampunganFile/" + fileName,(kaloError) => {
            if(kaloError){
-               console.log(kaloError);
+            //    console.log(kaloError);
                res.send('upload failed');
            }else {
             //    res.send('upload sukses');
-               var sql = `INSERT INTO productlist VALUES("${''}", "${namaProduk}", "${Kategori}", "${hargaProduk}", "${fileName}")`;
+               var sql = `INSERT INTO productlist VALUES("${''}", "${namaProduk}", "${Kategori}", "${hargaProduk}", "${detailProduk}", "${fileName}")`;
                 dbs.query(sql, (kaloError, hasilnya) => {
                     if(kaloError){
                         throw kaloError;
@@ -141,7 +143,7 @@ if (req.files){
    else
    {
        // beda menggunakan SET dan VALUES, kalau values semua harus diisi. sedang SET hanya yang ditentukan saja yang diisi
-    var sql = `INSERT INTO productlist VALUES("${''}", "${namaProduk}", "${Kategori}", "${hargaProduk}", "${null}")`;
+    var sql = `INSERT INTO productlist VALUES("${''}", "${namaProduk}", "${Kategori}", "${hargaProduk}", "${detailProduk}", "${null}")`;
     dbs.query(sql, (kaloError, hasilnya) => {
         if(kaloError){
             throw kaloError;
@@ -158,7 +160,7 @@ if (req.files){
 app.post('/deleteData', (req, res) => {
 // ambil paramater dari fe, eg: namaproduk, harga, file
    var idProduk = req.body.inputSatu;
-    console.log(idProduk)
+    // console.log(idProduk)
    var sql = `DELETE from productlist where productID = ("${idProduk}")`;
     dbs.query(sql, (kaloError, hasilnya) => {
         if(kaloError){
@@ -173,7 +175,7 @@ app.post('/deleteData', (req, res) => {
 app.post('/DeleteCat', (req, res) => {
 // ambil paramater dari fe, eg: namaproduk, harga, file
    var idCat = req.body.inputCat;
-    console.log(idCat)
+    // console.log(idCat)
    var sql = `DELETE from categorytbl where categoryID = ("${idCat}")`;
     dbs.query(sql, (kaloError, hasilnya) => {
         if(kaloError){
@@ -219,7 +221,7 @@ app.get('/getcat/:id', (req, res) => {
 app.post('/EditCategory', (req,res) => {
     let catID = req.body.inputid
     let foodkat = req.body.inputnama
-    console.log(foodkat)
+    // console.log(foodkat)
 
     var queryUpdate = `UPDATE categorytbl SET foodcategory = "${foodkat}" WHERE categoryID="${catID}"`;
                         dbs.query(queryUpdate, (err, result) => {
@@ -237,10 +239,12 @@ app.post('/ubahData', (req, res) => {
     var namaProduk = req.body.namaproduk;
     var categoryid = req.body.kategori;
     var hargaProduk = req.body.harga;
-    console.log(id);
-    console.log(namaProduk);
-    console.log(categoryid);
-    console.log(hargaProduk);
+    var detailProduk = req.body.detailproduk;
+    // console.log(id);
+    // console.log(namaProduk);
+    // console.log(categoryid);
+    // console.log(hargaProduk);
+    // console.log(detailProduk);
     // console.log(req.files.file.name)
     
 
@@ -258,12 +262,12 @@ app.post('/ubahData', (req, res) => {
         var fungsiFile = req.files.file;
         fungsiFile.mv("./tampunganFile/"+fileName, (kaloError) => {
             if(kaloError){
-                console.log(kaloError);
+                // console.log(kaloError);
                 res.send('Upload failed');
             } else {
                 // res.send('Upload berhasil');
                 var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID = "${categoryid}",  
-                        harga = "${hargaProduk}", foto_produk = "${fileName}" WHERE productID="${id}"`;
+                        harga = "${hargaProduk}", detailproduk = "${detailProduk}", foto_produk = "${fileName}" WHERE productID="${id}"`;
                         dbs.query(queryUpdate, (err, result) => {
                             if(err){
                                 throw err;
@@ -277,7 +281,7 @@ app.post('/ubahData', (req, res) => {
     else
     {
         var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID =  "${categoryid}", 
-                        harga = "${hargaProduk}" WHERE productID="${id}"`;
+                        harga = "${hargaProduk}", detailproduk = "${detailProduk}" WHERE productID="${id}"`;
             dbs.query(queryUpdate, (err, result) => {
                 if(err){
                     throw err;
@@ -316,6 +320,129 @@ app.post('/login', (req, res) => {
     });
 });
 
+// LOGIN ADMIN
+app.post('/adminlogin', (req, res) => {
+    var sql = `SELECT * FROM useradmin`;
+    dbs.query(sql, (error, result) => {
+        if(error) {
+            throw error;
+        } else {
+            var username = req.body.username;
+            var password = req.body.password;
+
+            for(var i=0; i < result.length; i++ ){
+                if(username === result[i].username && password === result[i].password)
+                {       
+                    res.send(username);
+                    break;
+                } else if(i === result.length - 1) {
+                    res.send('0');
+                }
+            }
+        }
+    });
+});
+
+// LOGIN USER
+app.post('/userlogin', (req, res) => {
+    var sql = `SELECT * FROM users`;
+    dbs.query(sql, (error, result) => {
+        if(error) {
+            throw error;
+        } else {
+            var username = req.body.username;
+            var password = req.body.password;
+            console.log(username)
+
+            for(var i=0; i < result.length; i++ ){
+                if(username === result[i].username && password === result[i].password)
+                {       
+                    res.send(username);
+                    break;
+                } else if(i === result.length - 1) {
+                    res.send('0');
+                }
+            }
+        }
+    });
+});
+
+
+//BUAT NEWPRODUCT
+app.get('/newestproduct', (req, res) => {
+    var panggilData = 'SELECT * FROM  productlist ORDER BY productID DESC LIMIT 3;'
+    // panggilData += 'SELECT * FROM size'
+    dbs.query(panggilData, (kaloError, hasilQuery) => {
+        if(kaloError)
+        {
+            throw kaloError;
+        } 
+        else 
+        {
+            res.send(hasilQuery);
+            // console.log(hasilQuery)
+        }
+    });
+});
+
+//BUAT REGISTRASI
+app.post('/registration', (req, res) => {
+    var namadepan = req.body.namadepan;
+    var namabelakang = req.body.namabelakang;
+    var username = req.body.username;
+    var password = req.body.password;
+    var email = req.body.email;
+    var alamat = req.body.alamat;
+    var birthday = req.body.birthday;
+    var kota = req.body.kota;
+    var negara = req.body.negara;
+    var zip = req.body.zip;
+
+    console.log(namadepan)
+
+    // // if(req.files){
+    // //     var fileName = req.files.file.name;
+    // //     var fungsiFile = req.files.file;
+    // //     fungsiFile.mv("./tampunganFile/"+fileName, (kaloError) => {
+    // //         if(kaloError){
+    // //             // console.log(kaloError);
+    // //             res.send('Upload failed');
+    // //         } else {
+    // //             // res.send('Upload berhasil');
+    // //             var queryinsert = `INSERT INTO productlist VALUES("${''}", "${namadepan}", "${namabelakang}", "${username}", "${password}","${email}","${alamat}","${birthday}", "${kota}","${negara}","${zip}", "${null}")`;
+    // //             // var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID = "${categoryid}",  
+    // //             //         harga = "${hargaProduk}", detailproduk = "${detailProduk}", foto_produk = "${fileName}" WHERE productID="${id}"`;
+    // //             //         dbs.query(queryUpdate, (err, result) => {
+    // //             //             if(err){
+    // //             //                 throw err;
+    // //             //             } else {
+    // //             //                 res.send('1');
+    // //             //             }
+    // //             //         });
+    // //         }
+    // //     })
+    // // }
+    // else
+    // {
+        var queryinsert = `INSERT INTO users VALUES("${''}", "${namadepan}", "${namabelakang}", "${username}", "${password}",
+            "${email}","${alamat}","${birthday}", "${kota}","${negara}","${zip}", "${''}")`;
+        // var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID =  "${categoryid}", 
+        //                 harga = "${hargaProduk}", detailproduk = "${detailProduk}" WHERE productID="${id}"`;
+            dbs.query(queryinsert, (err, result) => {
+                if(err){
+                    throw err;
+                } else {
+                    res.send('1');
+                }
+            });
+    // }
+
+    // 12. update di database
+
+
+
+    
+});
 
 
 app.listen(port, () => {

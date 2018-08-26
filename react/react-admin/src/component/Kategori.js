@@ -3,9 +3,10 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
+import Cookies from 'universal-cookie';
 // import { connect } from 'react-redux';
-
+const cookies = new Cookies()
 
 class AllProduct extends Component {
 
@@ -48,7 +49,7 @@ class AllProduct extends Component {
 
 
   render() {
-
+    if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     const hasil = this.state.dataproduk.map(
       (isi, urutan) => {
           var urut = urutan + 1;
@@ -141,15 +142,17 @@ class AllProduct extends Component {
             {/* Dashboard Header Section    */}
             <section className="dashboard-header">
               <div className="container-fluid">
-
+              <div style={{textAlign:'center', padding: 20}}>
+              <Link to="/addcat" className="btn btn-primary btn-m">Add Category</Link>
+              </div>
               <div className="row bg-white has-shadow">
 
                 <table className="table table-striped table-hover table-bordered">
                   <thead>
-                      <tr>
+                      <tr className="table-striped table-secondary" >
                           <th style={{textAlign: 'center'}}>Nomor</th>
                           <th style={{textAlign: 'center'}}>Kategori</th>
-                          <th style={{textAlign: 'center'}}>Actions &nbsp;&nbsp;&nbsp;<Link to="/addcat" className="btn btn-primary btn-sm">Add</Link></th>
+                          <th style={{textAlign: 'center'}}>Actions</th>
                       </tr>
                   </thead>
                   <tbody>

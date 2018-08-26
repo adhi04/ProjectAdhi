@@ -16,20 +16,24 @@ import {Link} from 'react-router-dom';
 import {Route} from 'react-router-dom';
 import AddCategory from './component/AddCategory';
 import AddKategori from './component/AddKategori';
+import Logout from './component/Logout';
 
 class App extends Component {
   render() 
   {
     return (
       <div>
-        <Route exact path = "/" component = {Main} />
+        <Route exact path = "/" component = {Login} />
+        <Route path = "/homepage" component = {Main} />
         <Route path = "/kategori" component = {Kategori} />
         <Route path = "/addcat" component = {AddCategory} />
         {/* <Route path = "/addkat" component = {AddKategori    } /> */}
         <Route path = "/tambahdata" component = {AddProduct} />
-        <Route path = "/allcategories" component = {AllCategories} />
+        {/* <Route path = "/allcategories" component = {AllCategories} /> */}
         <Route path = "/editinv" component = {EditInv} />
+        {/* <Route path = "/" component = {Login} /> */}
         <Route path = "/login" component = {Login} />
+        <Route path = "/logout" component = {Logout} />
         {/* <Route path = "/editProduct" component = {EditProduct} /> */}
         <Route path = "/editdata" component = {Editproduk} />
         <Route path = "/editkat" component = {EditKat} />

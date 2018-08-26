@@ -13,6 +13,7 @@ class Editproduk extends Component {
         kategori: [],
         kategoriID: '',
         harga: '',
+        detailproduk: '',
         foto: '',
     }
     
@@ -25,8 +26,9 @@ class Editproduk extends Component {
             this.setState({
                 id: hasilAmbil.data[0].productID,
                 namaproduk: hasilAmbil.data[0].nama_produk,
-                // kategori: hasilAmbil.data[0].categoryID,
-                harga: hasilAmbil.data[0].harga
+                kategori: hasilAmbil.data[0].categoryID,
+                harga: hasilAmbil.data[0].harga,
+                detailproduk: hasilAmbil.data[0].detailproduk
             });
             
         }
@@ -65,11 +67,13 @@ class Editproduk extends Component {
       var kategoriID = e.kategori.value;
       var namaproduk = e.namaproduk.value;
       var hargaproduk = e.hargaproduk.value;
+      var detailproduk = e.detailproduk.value;
 
       this.setState({
           kategoriID: kategoriID,
           namaproduk: namaproduk,
           hargaproduk: hargaproduk,
+          detailproduk: detailproduk,
       })
     }
   
@@ -83,6 +87,7 @@ class Editproduk extends Component {
       formData.append('namaproduk', this.state.namaproduk);
       formData.append('kategori', this.state.kategoriID);
       formData.append('harga', this.state.hargaproduk);
+      formData.append('detailproduk', this.state.detailproduk);
   
       // axios.post('http://localhost:8002/ubahData/', {
       //     id: e.idproduk.value,
@@ -102,6 +107,29 @@ class Editproduk extends Component {
     })
     }
 
+    // constructor(props) {
+    //   super(props);
+    //   this.state = {
+    //     value: 'Test On-change in your text-area form', 
+    //     detailproduk: ''
+    //   };
+  
+    //   this.handleChange = this.handleChange.bind(this);
+      
+    // }
+  
+    // handleChange(event) {
+    //   this.setState({detailproduk: event.target.value});
+    // }
+
+    handleChange = (e) => {
+      this.setState({
+        
+          detailproduk: e.target.value,
+         
+      })
+  
+  }
 
   render() {
 
@@ -201,11 +229,11 @@ class Editproduk extends Component {
                 <fieldset>
                     <legend>Edit Data</legend>
                     <hr/>
-                    <input type="hidden" className="form-control" ref="idproduk" Value={this.state.id}/>
+                    <input type="hidden" className="form-control" ref="idproduk" value={this.state.id}/>
                     <div className="form-group">
                         <label className="col-lg-2 control-label">Nama Produk</label>
                         <div className="col-lg-12">
-                            <input ref="namaproduk" type="text" className="form-control" Value={this.state.namaproduk} placeholder="Nama produk ..." />
+                            <input ref="namaproduk" type="text" className="form-control" value={this.state.namaproduk} placeholder="Nama produk ..." />
                         </div>
                     </div>
 
@@ -221,7 +249,14 @@ class Editproduk extends Component {
                     <div className="form-group">
                         <label className="col-lg-2 control-label">Harga</label>
                         <div className="col-lg-12">
-                            <input ref="hargaproduk" type="text" className="form-control"  Value={this.state.harga} placeholder="Harga produk ..." />
+                            <input ref="hargaproduk" type="text" className="form-control"  value={this.state.harga} placeholder="Harga produk ..." />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-lg-2 control-label">Deskripsi</label>
+                        <div className="col-lg-12">
+                            <textarea ref="detailproduk" type="text" className="form-control"  value={this.state.detailproduk} onChange={this.handleChange}></textarea>
                         </div>
                     </div>
 

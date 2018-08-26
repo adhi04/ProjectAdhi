@@ -5,6 +5,9 @@ import Footer from './Footer';
 
 import axios from 'axios';
 import {Link, Redirect} from 'react-router-dom';
+import Cookies from 'universal-cookie';
+// import { connect } from 'react-redux';
+const cookies = new Cookies()
 
 
 
@@ -16,6 +19,7 @@ class AddProduct extends Component {
     kategori: [],
     kategoriID: '',
     harga: '',
+    detailproduk: '',
     foto: '',
     redirect: false
 }
@@ -62,12 +66,14 @@ componentDidMount(){
       var kategoriID = e.kategori.value;
       var namaproduk = e.namaproduk.value;
       var hargaproduk = e.hargaproduk.value;
+      var detailproduk = e.detailproduk.value;
     
   
             this.setState({
               kategoriID: kategoriID,
               namaproduk: namaproduk,
               hargaproduk: hargaproduk,
+              detailproduk: detailproduk
             }) 
           }
 
@@ -79,7 +85,8 @@ componentDidMount(){
       formData.append('namaproduk', this.state.namaproduk);
       formData.append('kategori', this.state.kategoriID);
       formData.append('harga', this.state.hargaproduk);
-      
+      formData.append('detailproduk', this.state.detailproduk);
+      // console.log (detailproduk)
       axios.post('http://localhost:8002/tambahData/', formData).then((hasil) => {
         var respon = hasil.data;
         console.log(respon) 
@@ -92,7 +99,7 @@ componentDidMount(){
     })
   }
   render() {
-
+    if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     if (this.state.redirect) return <Redirect to="/allproduct" />
 
     // const listukuran = this.state.listukuran.map((item, index) => {
@@ -219,6 +226,13 @@ componentDidMount(){
                     <label className="col-lg-2 control-label">Harga</label>
                     <div className="col-lg-12">
                         <input ref="hargaproduk" type="text" className="form-control"  placeholder="Harga produk ..." />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">Deskripsi</label>
+                    <div className="col-lg-12">
+                        <textarea ref="detailproduk" type="text" className="form-control"  Value={this.state.harga} placeholder="Harga produk ..." />
                     </div>
                 </div>
 
