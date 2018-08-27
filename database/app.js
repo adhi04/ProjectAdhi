@@ -439,10 +439,63 @@ app.post('/registration', (req, res) => {
 
     // 12. update di database
 
-
-
-    
 });
+
+
+
+// UPDATE CART
+app.post('/updatecart', (req,res) =>{
+    // console.log(req.body.user_id)
+    // console.log(req.body.harga)
+    // console.log(req.body.produk_id)
+    var user_id = req.body.user_id
+    var nama_produk = req.body.namaproduk
+    var harga = req.body.harga
+    var quantity = 1
+    var total_harga = harga*quantity
+
+    var sql= `INSERT INTO cart SET user_id=?, nama_produk=?, quantity=?, harga=?, total_harga=?`
+    
+    dbs.query(sql,[user_id, nama_produk, quantity, harga, total_harga],(err, result) =>{
+    if (err) throw err
+    res.send("berhasil")
+    })
+})
+
+app.post(`/showcart`, (req,res) =>
+{
+    // console.log(req.body.user_id)
+    // console.log(req.body.harga)
+    // console.log(req.body.produk_id)
+    var user_id = req.body.user_id
+
+
+    // var sql= 'SELECT * FROM `cart` JOIN produk_samid ON cart.product_id=produk_samid.id WHERE cart.user_id=?'
+    var sql= 'SELECT * FROM `cart` WHERE user_id=?'
+    
+    dbs.query(sql,user_id,(err, result) =>{
+    if (err) throw err
+    console.log(result)
+    res.send(result)
+    })
+})
+
+// DELETE CART/////////////
+app.post('/deleteCart', (req, res) => {
+    // ambil paramater dari fe, eg: namaproduk, harga, file
+       var cartID = req.body.cartID;
+        // console.log(idProduk)
+       var sql = `DELETE from cart where cartID = ?`;
+        dbs.query(sql, cartID, (kaloError, hasilnya) => {
+            if(kaloError){
+                throw kaloError;
+            }
+             else {
+                res.send('1')
+            }
+        });
+    });
+
 
 
 app.listen(port, () => {

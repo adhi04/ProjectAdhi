@@ -11,6 +11,7 @@ class Editproduk extends Component {
         id: '',
         namaproduk: '',
         kategori: [],
+        kategory: [],
         kategoriID: '',
         harga: '',
         detailproduk: '',
@@ -40,7 +41,7 @@ class Editproduk extends Component {
                 console.log(ambilData.data[0]);
                 console.log(ambilData.data[1]);
                 this.setState({
-                  kategori: ambilData.data,
+                  kategory: ambilData.data,
                   // listukuran: ambilData.data[1]
                     
                 });
@@ -142,7 +143,7 @@ class Editproduk extends Component {
     //   return <option key={index} value={itemID}>{nameSize}</option>
       
     // }) 
-    const kategori = this.state.kategori.map((item, index) => {
+    const kategori = this.state.kategory.map((item, index) => {
       
       var itemID = item.categoryID;
       var nameCategory = item.foodcategory; 
@@ -233,7 +234,7 @@ class Editproduk extends Component {
                     <div className="form-group">
                         <label className="col-lg-2 control-label">Nama Produk</label>
                         <div className="col-lg-12">
-                            <input ref="namaproduk" type="text" className="form-control" value={this.state.namaproduk} placeholder="Nama produk ..." />
+                            <input ref="namaproduk" type="text" className="form-control" Value={this.state.namaproduk}  />
                         </div>
                     </div>
 
@@ -249,7 +250,7 @@ class Editproduk extends Component {
                     <div className="form-group">
                         <label className="col-lg-2 control-label">Harga</label>
                         <div className="col-lg-12">
-                            <input ref="hargaproduk" type="text" className="form-control"  value={this.state.harga} placeholder="Harga produk ..." />
+                            <input ref="hargaproduk" type="text" className="form-control"  Value={this.state.harga} placeholder="Harga produk ..." />
                         </div>
                     </div>
 

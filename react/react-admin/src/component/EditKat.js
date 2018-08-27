@@ -150,7 +150,7 @@ change = (e) => {
             
                 <legend>Edit Kategori</legend>
                 <hr/>
-                <input type="text" className="form-control" ref="idkat" value={this.state.kategoriid}/>
+                <input type="hidden" className="form-control" ref="idkat" value={this.state.kategoriid}/>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">Kategori Makanan</label>
                     <div className="col-lg-12">
