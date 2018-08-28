@@ -11,7 +11,8 @@ const dbs = database.createConnection({
     user: 'root',
     password: '',
     database: 'mypet',
-    port: '3306'
+    port: '3306',
+    multipleStatements:true
 });
 dbs.connect();
 
@@ -352,12 +353,15 @@ app.post('/userlogin', (req, res) => {
         } else {
             var username = req.body.username;
             var password = req.body.password;
-            console.log(username)
+        
+            // console.log(username)
 
             for(var i=0; i < result.length; i++ ){
                 if(username === result[i].username && password === result[i].password)
                 {       
-                    res.send(username);
+                    var userID= result[i].userID
+                    console.log(userID);
+                    res.send((userID).toString());
                     break;
                 } else if(i === result.length - 1) {
                     res.send('0');
@@ -399,35 +403,11 @@ app.post('/registration', (req, res) => {
     var zip = req.body.zip;
 
     console.log(namadepan)
+    console.log(namabelakang)
+    console.log(username)
 
-    // // if(req.files){
-    // //     var fileName = req.files.file.name;
-    // //     var fungsiFile = req.files.file;
-    // //     fungsiFile.mv("./tampunganFile/"+fileName, (kaloError) => {
-    // //         if(kaloError){
-    // //             // console.log(kaloError);
-    // //             res.send('Upload failed');
-    // //         } else {
-    // //             // res.send('Upload berhasil');
-    // //             var queryinsert = `INSERT INTO productlist VALUES("${''}", "${namadepan}", "${namabelakang}", "${username}", "${password}","${email}","${alamat}","${birthday}", "${kota}","${negara}","${zip}", "${null}")`;
-    // //             // var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID = "${categoryid}",  
-    // //             //         harga = "${hargaProduk}", detailproduk = "${detailProduk}", foto_produk = "${fileName}" WHERE productID="${id}"`;
-    // //             //         dbs.query(queryUpdate, (err, result) => {
-    // //             //             if(err){
-    // //             //                 throw err;
-    // //             //             } else {
-    // //             //                 res.send('1');
-    // //             //             }
-    // //             //         });
-    // //         }
-    // //     })
-    // // }
-    // else
-    // {
         var queryinsert = `INSERT INTO users VALUES("${''}", "${namadepan}", "${namabelakang}", "${username}", "${password}",
             "${email}","${alamat}","${birthday}", "${kota}","${negara}","${zip}", "${''}")`;
-        // var queryUpdate = `UPDATE productlist SET nama_produk = "${namaProduk}", categoryID =  "${categoryid}", 
-        //                 harga = "${hargaProduk}", detailproduk = "${detailProduk}" WHERE productID="${id}"`;
             dbs.query(queryinsert, (err, result) => {
                 if(err){
                     throw err;
@@ -435,28 +415,76 @@ app.post('/registration', (req, res) => {
                     res.send('1');
                 }
             });
-    // }
-
-    // 12. update di database
-
 });
 
 
 
 // UPDATE CART
-app.post('/updatecart', (req,res) =>{
+app.post('/updateCart', (req,res) =>{
     // console.log(req.body.user_id)
     // console.log(req.body.harga)
-    // console.log(req.body.produk_id)
-    var user_id = req.body.user_id
-    var nama_produk = req.body.namaproduk
-    var harga = req.body.harga
-    var quantity = 1
-    var total_harga = harga*quantity
+    // console.log(req.body.namaproduk)
+    // var user_id = req.body.userID
+    var newQuantity = req.body.newQuantity
+    var cartid = req.body.cartID
+    var hargaproduk = req.body.hargaproduk
+    var subtotal = newQuantity*hargaproduk
 
-    var sql= `INSERT INTO cart SET user_id=?, nama_produk=?, quantity=?, harga=?, total_harga=?`
+    var sql= `UPDATE cart SET quantity="${newQuantity}", total_harga="${subtotal}" WHERE cartID="${cartid}"`
     
-    dbs.query(sql,[user_id, nama_produk, quantity, harga, total_harga],(err, result) =>{
+    dbs.query(sql,(err, result) =>{
+    if (err) throw err
+    else
+    {
+        // var sql= 'SELECT * FROM `cart` WHERE user_id=?'
+    
+        // dbs.query(sql,user_id,(err, result) =>{
+        // if (err) throw err
+        // // console.log(result)
+        // else res.send(result)
+        // })
+        res.send("1")
+    }
+    
+    })
+})
+app.post('/insertcart', (req,res) =>{
+    // console.log(req.body.user_id)
+    // console.log(req.body.harga)
+    // console.log(req.body.namaproduk)
+    var namaproduk = req.body.namaproduk
+    var harga = req.body.harga
+    var userid = req.body.user_id
+    
+    
+
+    var sql= `INSERT INTO cart SET nama_produk="${namaproduk}", harga="${harga}", user_id="${userid}", total_harga="${harga}" `
+    
+    dbs.query(sql,(err, result) =>{
+    if (err) throw err
+    else
+    {
+        console.log("data berhasil masuk")
+    }
+    
+    })
+})
+
+app.post('/updatecheckout', (req,res) =>{
+    // console.log(req.body.user_id)
+    // console.log(req.body.harga)
+    console.log(req.body.userid)
+    var userID = req.body.userid
+    var status = 2
+    // var nama_produk = req.body.namaproduk
+    // var harga = req.body.harga
+    // var quantity = 1
+    // var total_harga = harga*quantity
+
+    var sql= `UPDATE cart SET statusID = "${status}" WHERE userID="${userID}" AND statusID= "1" `;   
+    //  INSERT INTO cart SET user_id=?, nama_produk=?, quantity=?, harga=?, total_harga=?`
+    
+    dbs.query(sql,(err, result) =>{
     if (err) throw err
     res.send("berhasil")
     })
@@ -468,6 +496,7 @@ app.post(`/showcart`, (req,res) =>
     // console.log(req.body.harga)
     // console.log(req.body.produk_id)
     var user_id = req.body.user_id
+    // console.log(user_id)
 
 
     // var sql= 'SELECT * FROM `cart` JOIN produk_samid ON cart.product_id=produk_samid.id WHERE cart.user_id=?'
@@ -475,8 +504,11 @@ app.post(`/showcart`, (req,res) =>
     
     dbs.query(sql,user_id,(err, result) =>{
     if (err) throw err
-    console.log(result)
-    res.send(result)
+    else{
+        res.send(result)
+    }
+    // console.log(result)
+    
     })
 })
 
@@ -495,6 +527,124 @@ app.post('/deleteCart', (req, res) => {
             }
         });
     });
+
+// TAMPIL BERDASAR KATEGORI////////////////////////
+app.post('/basedcategory', (req, res) => {
+    // ambil paramater dari fe, eg: namaproduk, harga, file
+       var categoryID = req.body.categoryID;
+        // console.log(idProduk)
+       var sql = `SELECT * from cart where categoryID = ?`;
+        dbs.query(sql, categoryID, (kaloError, hasilnya) => {
+            if(kaloError){
+                throw kaloError;
+            }
+             else {
+                res.send('1')
+            }
+        });
+    });
+
+    // SHOW USERID//////////
+    app.post('/userdata', (req, res) => {
+        // ambil paramater dari fe, eg: namaproduk, harga, file
+           var userID = req.body.user_id;
+            console.log(userID)
+           var sql = `SELECT * from users where userID = ?`;
+            dbs.query(sql, userID, (kaloError, datanya) => {
+                if(kaloError){
+                    throw kaloError;
+                }
+                 else {
+                    res.send(datanya)
+                }
+            });
+        });
+
+// TAMPILIN PROFILE////////////////////
+
+app.post('/showprofile', (req,res) => {
+    // console.log(req.body.id)
+    var userID = req.body.user_id;
+    var panggilData = `SELECT * FROM  users WHERE userID= ${userID} `
+    // panggilData += 'SELECT * FROM size'
+    dbs.query(panggilData, (kaloError, hasilQuery) => {
+        if(kaloError)
+        {
+            throw kaloError;
+        } 
+        else 
+        {
+            res.send(hasilQuery);
+            console.log(hasilQuery)
+        }
+    });
+});
+
+//JUMLAH PRODUK///////
+app.get('/jumlahproduk', (req,res) => {
+    var panggilData = `SELECT * FROM productlist`
+    dbs.query(panggilData, (kaloError, hasilQuery) => {
+        if(kaloError)
+        {
+            throw kaloError;
+        } 
+        else 
+        {
+            var count = 0;
+            for(var i = 0; i<hasilQuery.length;i++)
+            {
+                count++
+            }
+            console.log(count)
+            // res.send(count);
+            res.send((count).toString());
+        }
+    });
+});
+
+// JUMLAH KATEGORI////////
+app.get('/jumlahkategori', (req,res) => {
+    var panggilData = `SELECT * FROM categorytbl`
+    dbs.query(panggilData, (kaloError, hasilQuery) => {
+        if(kaloError)
+        {
+            throw kaloError;
+        } 
+        else 
+        {
+            var count = 0;
+            for(var i = 0; i<hasilQuery.length;i++)
+            {
+                count++
+            }
+            console.log(count)
+            // res.send(count);
+            res.send((count).toString());
+        }
+    });
+});
+
+// JUMLAH USER///////////////
+app.get('/jumlahuser', (req,res) => {
+    var panggilData = `SELECT * FROM users`
+    dbs.query(panggilData, (kaloError, hasilQuery) => {
+        if(kaloError)
+        {
+            throw kaloError;
+        } 
+        else 
+        {
+            var count = 0;
+            for(var i = 0; i<hasilQuery.length;i++)
+            {
+                count++
+            }
+            console.log(count)
+            // res.send(count);
+            res.send((count).toString());
+        }
+    });
+});
 
 
 

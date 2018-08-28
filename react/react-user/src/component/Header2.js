@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
-class Header extends Component {
+class Header2 extends Component {
   render() {
     return (
       <div >
@@ -20,15 +20,14 @@ class Header extends Component {
           <ul className="navbar-nav ml-auto">
             
             <li className="nav-item">
-              <Link to = "/cart" className="btn btn-outline-light fa fa-shopping-cart"><span className="label label-dark" ></span>
-              {/* <img src="./img/icons8-shopping-cart-50.png" alt="" style={{height: '25px', width: '25px'}}/> */}
-              </Link>
+            <Link to = "/cart" className="btn btn-outline-light fa fa-shopping-cart"><span className="label label-dark" ></span>
+            </Link>
             </li>
             <li className="nav-item">
               <Link to = "/registration" className="nav-link">Register</Link>
             </li>
             <li className="nav-item">
-              <Link to = "/login" className="nav-link">Login</Link>
+              <Link to = "/logout" className="nav-link">Logout</Link>
             </li>
           </ul>
         </div>
@@ -39,4 +38,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default Header2;

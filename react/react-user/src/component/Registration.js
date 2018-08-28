@@ -24,8 +24,8 @@ class Registration extends Component {
     // axios.post('http://localhost:8002/registration/')
     .then((hasil) => {
       var respon = hasil.data;
-      console.log(respon) 
-      if(respon === 1) 
+      console.log(hasil.data) 
+      if(respon == '1') 
       {
         this.setState({
           redirect: true
@@ -34,66 +34,11 @@ class Registration extends Component {
     })
   }
 
-    // var kategoriID = e.kategori.value;
-    // var namaproduk = e.namaproduk.value;
-    // var hargaproduk = e.hargaproduk.value;
-    // var detailproduk = e.detailproduk.value;
-  
-
-          // this.setState({
-          //   namadepan: namadepan,
-          //   namabelakang: namabelakang,
-          //   username: username,
-          //   password: password,
-          //   email: email,
-          //   alamat: alamat,
-          //   birthday: birthday,
-          //   kota: kota,
-          //   negara: negara,
-          //   zip: zip,
-          //   // kategoriID: kategoriID,
-          //   // namaproduk: namaproduk,
-          //   // hargaproduk: hargaproduk,
-          //   // detailproduk: detailproduk
-          // }) 
-        // }
-
-  // registration = (e) => {
-  //   e.preventDefault();
-  //   // 9. new form data seperti gudang/library. karena didalam form maka menggunakan append. kenapa menggunakan state karena state dia tas sudah diganti
-  //   let formData = new FormData();
-  //   // formData.append('file', this.state.foto);
-  //   // formData.append('namaproduk', this.state.namaproduk);
-  //   // formData.append('kategori', this.state.kategoriID);
-  //   // formData.append('harga', this.state.hargaproduk);
-  //   // formData.append('detailproduk', this.state.detailproduk);
-  //   // console.log (detailproduk)
-  //   formData.append('namadepan', this.state.namadepan)
-  //   formData.append('namabelakang', this.state.namabelakang)
-  //   formData.append('username', this.state.username)
-  //   formData.append('password', this.state.password)
-  //   formData.append('email', this.state.email)
-  //   formData.append('alamat', this.state.alamat)
-  //   formData.append('birthday', this.state.birthday)
-  //   formData.append('kota', this.state.kota)
-  //   formData.append('negara', this.state.negara)
-  //   formData.append('zip', this.state.zip)
-  //   axios.post('http://localhost:8002/registration/', formData)
-  //   .then((hasil) => {
-  //     var respon = hasil.data;
-  //     console.log(respon) 
-  //     if(respon === 1) 
-  //     {
-  //       this.setState({
-  //         redirect: true
-  //       })
-  //     }
-  //   })
-  // }
+   
 
   render() {
 
-    if (this.state.redirect) return <Redirect to="/allproduct" />
+    if (this.state.redirect) return <Redirect to="/" />
 
 
     return (
@@ -163,7 +108,7 @@ class Registration extends Component {
                     </label>
                   </div>
                 </div>
-                <button type="submit" onClick={() => this.value(this.refs)} className="btn btn-primary">Sign in</button>
+                <button type="submit" onClick={() => this.value(this.refs)} className="btn btn-primary">Register</button>
               </form>
             </div>
           );

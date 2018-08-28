@@ -90,12 +90,6 @@ class Editproduk extends Component {
       formData.append('harga', this.state.hargaproduk);
       formData.append('detailproduk', this.state.detailproduk);
   
-      // axios.post('http://localhost:8002/ubahData/', {
-      //     id: e.idproduk.value,
-      //     namaproduk: e.namaproduk.value,
-      //     harga: e.hargaproduk.value,
-      //     foto_produk: e.fotoproduk.value
-      // });
       axios.post('http://localhost:8002/ubahData/', formData).then((hasil) => {
         var respon = hasil.data;
         console.log(respon) 
@@ -107,21 +101,6 @@ class Editproduk extends Component {
         }
     })
     }
-
-    // constructor(props) {
-    //   super(props);
-    //   this.state = {
-    //     value: 'Test On-change in your text-area form', 
-    //     detailproduk: ''
-    //   };
-  
-    //   this.handleChange = this.handleChange.bind(this);
-      
-    // }
-  
-    // handleChange(event) {
-    //   this.setState({detailproduk: event.target.value});
-    // }
 
     handleChange = (e) => {
       this.setState({
@@ -135,14 +114,6 @@ class Editproduk extends Component {
   render() {
 
     if (this.state.redirect) return <Redirect to="/allproduct" />
-
-    // const listukuran = this.state.listukuran.map((item, index) => {
-      
-    //   var itemID = item.id;
-    //   var nameSize = item.size_name; 
-    //   return <option key={index} value={itemID}>{nameSize}</option>
-      
-    // }) 
     const kategori = this.state.kategory.map((item, index) => {
       
       var itemID = item.categoryID;
@@ -279,76 +250,8 @@ class Editproduk extends Component {
 
                 </fieldset>
             </form>
-                {/* <div className="content-wrapper">
-                  <div className="container-fluid">
-                    
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-lg-3 ">
-                        </div>
-                        <div className="col-lg-6">
-                          <form>
-                            <div className="card" style={{marginTop: 50, width: 600}}>
-                            <br />
-                              <center><h3 className="text-danger">Form Edit Produk</h3></center>
-                              <hr />
-                              <div className="form-group row">
-                                <label className="col-sm-2 form-control-label">Nama Produk</label>
-                                <div className="col-sm-10">
-                                  <input type="text" placeholder="Nama" className="form-control" />
-                                </div>
-                              </div>
-                              <div className="form-group row">
-                                <label className="col-sm-2 form-control-label">Kategori</label>
-                                <div className="col-sm-10">
-                                  <input type="text" placeholder="Kategori" className="form-control" />
-                                </div>
-                              </div>
-                              <div className="form-group row">
-                                <label className="col-sm-2 form-control-label">Upload Gambar</label>
-                                <div className="col-sm-10">
-                                  <input type="file" placeholder="Gambar" className="form-control" />
-                                </div>
-                              </div>
-                              <div className="form-group row">
-                                <label className="col-sm-2 form-control-label">Harga</label>
-                                <div className="col-sm-10">
-                                  <input type="number" placeholder="Harga" className="form-control" />
-                                </div>
-                              </div>
-                              <div className="input-group">
-                                <div className="input-group-prepend">
-                                  <span className="input-group-text">Deskripsi</span>
-                                </div>
-                                <textarea className="form-control" aria-label="With textarea" defaultValue={""} />
-                              </div><br />
-                              <div className="card-body text-center">
-                                <button type="button" data-toggle="modal" data-target="#myModal" className="btn btn-primary">Save</button>
-                                <button type="button" data-toggle="modal" ref="#myModal" className="btn btn-danger">Delete</button>
-                                
-                                <div id="myModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" className="modal fade text-left">
-                                  <div role="document" className="modal-dialog">
-                                    <div className="modal-content">
-                                      <div className="modal-header">
-                                        <h5 id="exampleModalLabel" className="modal-title">Simpan Semua Input Form</h5>
-                                        <button type="button" data-dismiss="modal" aria-label="Close" className="close"><span aria-hidden="true">×</span></button>
-                                      </div>
-                                      <div className="modal-body">
-                                        <p>Apakah Anda Yakin Ingin Menyimpanya?</p>
-                                      </div>
-                                      <div className="modal-footer">
-                                        <button type="button" data-dismiss="modal" className="btn btn-secondary">Close</button>
-                                        <button type="button" className="btn btn-primary">Save changes</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </form></div>
-                      </div></div></div></div> */}
-                      </div>
-                      </div></section>
+          </div>
+          </div></section>
             {/* Page Footer*/}
           </div>
         </div>

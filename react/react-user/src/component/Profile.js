@@ -1,17 +1,79 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+import Header from './Header';
+import Header2 from './Header2';
+
+const cookies = new Cookies();
 
 
 class Profile extends Component {
-  render() {
-    return (
+  state = {
+    datauser:[],
+    redirect: false
+  }
 
+  componentDidMount(){
+    var id_user = cookies.get('sessionid');
+    axios.post(`http://localhost:8002/showprofile/`,{
+      user_id: id_user
+    })
+    .then((hasilAmbil) => {
+        console.log(hasilAmbil.data);
+        this.setState({
+            datauser:hasilAmbil.data
+        })   
+    })
+  }
+
+  render() {
+
+    let mycookie = cookies.get('sessionid');
+    let navigation = (mycookie !== undefined) ? <Header2 /> : <Header />
+
+    const datauser = this.state.datauser.map((isi, urutan) =>  {   
+        var namadepan = isi.nama_depan;
+        var namabelakang = isi.nama_belakang;
+        var username = isi.username;
+        var email = isi.email;
+        var alamat = isi.alamat;
+        var kota = isi.kota;
+        var negara = isi.negara;
+        var zip = isi.zip;
+    return <div>
+      <div className="col-md-8">
+                      <p>Nama Depan    : </p>
+                      <p>{namadepan}</p>
+                      <p>Nama Belakang    : </p>
+                      <p>{namabelakang}</p>
+                      <p>Username    : </p>
+                      <p>@{username}</p>
+                      <p>Email    : </p>
+                      <p>{email}</p>
+                      <p>Alamat   : </p>
+                      <p>{alamat}</p>
+                      <p>Kota   : </p>
+                      <p>{kota}</p>
+                      <p>Negara   : </p>
+                      <p>{negara}</p>
+                      <p>ZIP      : </p>
+                      <p>{zip}</p>
+                      <hr />
+                      <a className="btn btn-primary" x href="editprof2.html" role="button">Edit</a>
+                    </div>
+    </div>
+    })
+    return (
+                <div>
+                  {navigation}
                 <div className="container">
                   <center><h1>Profil Pengguna</h1></center>
                   <div className="row" style={{backgroundColor: 'antiquewhite'}}>
-                    <div className="col-md-4">
-                      <img src="http://via.placeholder.com/200x200" alt="Foto" />
+                    <div className="col-md-4" style={{textAlign:"center", padding:30}} >
+                      <img src="/img/cat.jpg" alt="Foto" />
                     </div>
-                    <div className="col-md-8">
+                    {/* <div className="col-md-8">
                       <p>Nama     : </p>
                       <p>Alfi Sulistiani</p>
                       <p>Alamat   : </p>
@@ -20,7 +82,8 @@ class Profile extends Component {
                       <p>10 Januari 1994</p>
                       <hr />
                       <a className="btn btn-primary" x href="editprof2.html" role="button">Edit</a>
-                    </div>
+                    </div> */}
+                    {datauser}
                   </div>
                   <br />
                   <br />
@@ -62,6 +125,7 @@ class Profile extends Component {
                       </tr>
                     </tbody>
                   </table>
+                </div>
                 </div>
               );
             }

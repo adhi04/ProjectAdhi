@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+import Header from './Header';
+import Header2 from './Header2';
+
+const cookies = new Cookies();
 
 class Productlist extends Component {
   state={
@@ -20,7 +25,31 @@ class Productlist extends Component {
    
   }
 
+  buy(produk,harga){
+    var namaproduk = produk
+    var harga = harga
+    var user_id = cookies.get("sessionid")
+    console.log(namaproduk) 
+    console.log(harga)
+    console.log(user_id)
+    
+    axios.post('http://localhost:8002/updatecart', 
+    {
+        namaproduk:namaproduk,
+        harga:harga,
+        user_id: user_id
+    })
+    .then((response)=>{
+        if(response.data === "berhasil"){
+            this.setState({nextpage:true})
+        }
+    })
+  }
   render() {
+
+    let mycookie = cookies.get('sessionid');
+    let navigation = (mycookie !== undefined) ? <Header2 /> : <Header />
+
     const data =this.state.product.map((item, index)=>{
       // var urut =index+1;
       var produkID=item.productID;
@@ -33,7 +62,7 @@ class Productlist extends Component {
       // var status =item.status;
       var posted = item.posted;
       return (
-
+        
 
         <div className="col-sm-12 col-md-6 col-lg-4 p-b-50">
                   {/* Block2 */}
@@ -47,9 +76,10 @@ class Productlist extends Component {
                         </a>
                         <div className="block2-btn-addcart w-size1 trans-0-4">
                           {/* Button */}
-                          <Link to={{pathname:'/cart', state: {produkID: produkID}}}  className="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                          <button onClick={()=>this.buy(produk,harga)} className="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"> Add to Cart</button>
+                          {/* <Link to={{pathname:'/cart', state: {produkID: produkID}}}  className="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
                             Add to Cart
-                          </Link>
+                          </Link> */}
                         </div>
                       </div>
                     </div>
@@ -69,6 +99,7 @@ class Productlist extends Component {
       );
     return (
       <div >
+        {navigation}
         <section className="bgwhite p-t-55 p-b-65">
         <div className="container">
           <div className="row">

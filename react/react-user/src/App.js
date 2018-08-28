@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import Header from './component/Header';
+// import Header from './component/Header';
 import Content from './component/Content';
 import Registration from './component/Registration';
 import Login from './component/Login';
+import Logout from './component/Logout';
 import Footer from './component/Footer';
 import Cart from './component/Cart';
 import Invoice from './component/Invoice';
@@ -19,10 +20,11 @@ class App extends Component {
   {
     return (
       <div>
-        <Header/>
+        {/* <Header/> */}
         <Route exact path = "/" component = {Content} />
         <Route path = "/registration" component = {Registration} />
         <Route path = "/login" component = {Login} />
+        <Route path = "/logout" component = {Logout} />
         <Route path = "/cart" component = {Cart} />
         <Route path = "/checkout" component = {Checkout} />
         <Route path = "/invoice" component = {Invoice} />

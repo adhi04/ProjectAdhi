@@ -41,9 +41,9 @@ class Login extends Component {
                 <div className="info d-flex align-items-center">
                   <div className="content">
                     <div className="logo">
-                      <h1>Dashboard</h1>
+                      <h1>MyPet</h1>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <p>Selamat Datang Admin MyPet. Selamat bekerja. </p>
                   </div>
                 </div>
               </div>

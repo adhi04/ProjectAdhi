@@ -53,23 +53,6 @@ change = (e) => {
 
     if (this.state.redirect) return <Redirect to="/kategori" />
 
-    // const listukuran = this.state.listukuran.map((item, index) => {
-      
-    //   var itemID = item.id;
-    //   var nameSize = item.size_name; 
-    //   return <option key={index} value={itemID}>{nameSize}</option>
-      
-    // }) 
-    // const kategori = this.state.kategori.map((item, index) => {
-      
-    //   var itemID = item.categoryID;
-    //   var nameCategory = item.foodcategory; 
-    //   return <option key={index} value={itemID}>{nameCategory}</option>
-      
-    // })
-     
-
-  // render() {
     return (
         <div className="page">
         {/* Main Navbar*/}

@@ -5,7 +5,6 @@ import Footer from './Footer';
 import axios from 'axios';
 import {Link, Redirect} from 'react-router-dom';
 import Cookies from 'universal-cookie';
-// import { connect } from 'react-redux';
 const cookies = new Cookies()
 
 
@@ -29,27 +28,11 @@ class AddCategory extends Component {
           })
           console.log(e.catfoot.value)
         }
+
   render() {
     if(cookies.get('sessionid') === undefined) return <Redirect to="/Login"/>
     if (this.state.redirect) return <Redirect to="/kategori" />
 
-    // const listukuran = this.state.listukuran.map((item, index) => {
-      
-    //   var itemID = item.id;
-    //   var nameSize = item.size_name; 
-    //   return <option key={index} value={itemID}>{nameSize}</option>
-      
-    // }) 
-    // const kategori = this.state.kategori.map((item, index) => {
-      
-    //   var itemID = item.categoryID;
-    //   var nameCategory = item.foodcategory; 
-    //   return <option key={index} value={itemID}>{nameCategory}</option>
-      
-    // })
-     
-
-  // render() {
     return (
         <div className="page">
         {/* Main Navbar*/}
@@ -146,64 +129,7 @@ class AddCategory extends Component {
                         {/* <button type="submit" onClick={() => this.value(this.ref="catfoot")} className="btn btn-primary">Submit</button> */}
                     </div>
                 </div>
-
-            
-        </form>
-            {/* <section className="dashboard-header">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-lg-3 ">
-                  </div>
-                  <div className="col-lg-7">
-                    <form>
-                      <div className="card" style={{marginTop: 50}}>
-                        <br />
-                        <center><h3 className="text-danger">Form Tambah Kategori</h3></center>
-                        <hr />
-                        <div className="form-group row">
-                          <label className="col-sm-2 form-control-label">ID</label>
-                          <div className="col-sm-10">
-                            <input type="text" placeholder="ID" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <label className="col-sm-2 form-control-label">Kategori</label>
-                          <div className="col-sm-10">
-                            <input type="text" placeholder="Kategori" className="form-control" />
-                          </div>
-                        </div>
-                        <div className="input-group">
-                          <div className="input-group-prepend">
-                            <span className="input-group-text">Deskripsi</span>
-                          </div>
-                          <textarea className="form-control" aria-label="With textarea" defaultValue={""} />
-                        </div><br />
-                        <div className="card-body text-center">
-                          <button type="button" data-toggle="modal" data-target="#myModal" className="btn btn-primary">Add</button>
-                          <button type="button" data-toggle="modal" ref="#myModal" className="btn btn-danger">Delete</button>
-                         
-                          <div id="myModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" className="modal fade text-left">
-                            <div role="document" className="modal-dialog">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <h5 id="exampleModalLabel" className="modal-title">Simpan Semua Input Form</h5>
-                                  <button type="button" data-dismiss="modal" aria-label="Close" className="close"><span aria-hidden="true">×</span></button>
-                                </div>
-                                <div className="modal-body">
-                                  <p>Apakah Anda Yakin Ingin Menyimpanya?</p>
-                                </div>
-                                <div className="modal-footer">
-                                  <button type="button" data-dismiss="modal" className="btn btn-secondary">Close</button>
-                                  <button type="button" className="btn btn-primary">Save changes</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> 
-                    </form>
-                  </div>
-                  <div className="col-lg-3" /> */}
+                  </form>
                 </div>
               </div>
             </section>

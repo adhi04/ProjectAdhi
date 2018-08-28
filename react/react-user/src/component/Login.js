@@ -18,20 +18,25 @@ class Login extends Component {
          password: e.password.value
      }).then((hasil) => {
          var respon= hasil.data
-         if(respon !== 0) {
-          cookies.set("sessionid", respon, {path: '/'})
+         console.log('user id login = '+respon)
+         cookies.set("sessionid", respon, {path: '/'})
           self.setState({
                       statusRedirect: true
-                  });
-         }
+                  })
+        //  if(respon !== 0) {
+        //   cookies.set("sessionid", respon, {path: '/'})
+        //   self.setState({
+        //               statusRedirect: true
+        //           });
+         })
          
-     });
-   }
+     }
+   
 
   render() {
     if(this.state.statusRedirect) return <Redirect to="/"/>
     return (
-      <div >
+      <div style={{minHeight:600}} >
 
       <div className="container py-5" style={{minHeight: 480}}>
         <div className="row">

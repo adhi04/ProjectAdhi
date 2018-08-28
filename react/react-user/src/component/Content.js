@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import Prodetail from './Prodetail';
+// import Prodetail from './Prodetail';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+import Header from './Header';
+import Header2 from './Header2';
+
+const cookies = new Cookies();
 // import link from 'react-router-dom';
 
 class Content extends Component {
@@ -23,6 +28,9 @@ class Content extends Component {
   }
 
     render() {
+      let mycookie = cookies.get('sessionid');
+      let navigation = (mycookie !== undefined) ? <Header2 /> : <Header />
+
       const data =this.state.product.map((item, index)=>{
         var urut =index+1;
         var id=item.productID;
@@ -37,7 +45,7 @@ class Content extends Component {
         return (
           // <div className="row">
           <div className="col-lg-4 col-md-6 mb-4" key={urut}>
-          <div className="card h-100">
+          <div className="card h-100" style={{textAlign: "center"}}>
             <Link to="#"><img className="card-img-top" src={'http://localhost:8002/'+ `tampunganFile/${fotoproduk}`} style={{height: 190, width:250}} alt /></Link>
             <div className="card-body">
               <h4 className="card-title">
@@ -82,14 +90,16 @@ class Content extends Component {
     );
 
         return (
-         
+                  <div>
+                    {navigation}
                     <div className="container">
+                      
                       <div className="row">
                         <div className="col-lg-3">
                           <h1 className="my-4">MyPet</h1>
                           <div className="list-group">
-                            <Link to="/productlist" className="list-group-item">Hewan Peliharaan</Link>
                             <Link to="/productlist" className="list-group-item">Makanan Hewan</Link>
+                            <Link to="/productlist" className="list-group-item">Drugs</Link>
                             <Link to="/productlist" className="list-group-item">Aksesoris</Link>
                           </div>
                         </div>
@@ -120,6 +130,11 @@ class Content extends Component {
                               <span className="carousel-control-next-icon" aria-hidden="true" />
                               <span className="sr-only">Next</span>
                             </Link>
+                          </div>
+                          <div style={{textAlign:"center"}} >
+                            &nbsp;
+                            <h1>New Products</h1>
+                            &nbsp;
                           </div>
                           <div className="row">
                           {data}
@@ -216,7 +231,10 @@ class Content extends Component {
                               </div>
                             </div>
                           </div>
-                        </div></div></div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
                   );
                 }
               

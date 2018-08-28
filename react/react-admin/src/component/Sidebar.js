@@ -1,16 +1,4 @@
 import React, { Component } from 'react';
-import Header from './Header';
-import Main from './Main';
-import Footer from './Footer';
-import AddCategory from './AddCategory';
-import AddProduct from './AddProduct';
-import Kategori from './Kategori';
-import AllInv from './AllInv';
-import AllProduct from './AllProduct';
-import EditCat from './EditCat';
-import EditInv from './EditInv';
-import EditProduct from './EditProduct';
-import Login from './Login';
 import {Link} from 'react-router-dom';
 
 class Sidebar extends Component {
@@ -31,11 +19,7 @@ class Sidebar extends Component {
           <li className="active"><Link to="/homepage"> <i className="icon-home" />Home </Link></li>
     
           <li><Link to="/kategori"> <i className="icon-interface-windows" />Category </Link>
-            {/* <ul id="exampledropdownDropdown" className="collapse list-unstyled ">
-              <li><Link to="/kategori">All Categories</Link></li>
-              <li><Link to="/addcategory">Add Category</Link></li>
-              <li><Link to="/editcategory">Edit Category</Link></li>
-            </ul> */}
+          
           </li>
           <li><Link to = "/allproduct"> <i className="icon-interface-windows" />Product </Link></li>
           <li><a href="#exampledropdownDropdowninv" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Invoice </a>

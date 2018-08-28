@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {Link,Redirect} from 'react-router-dom';
 // import { connect } from 'react-redux';
-import Cookies from 'universal-cookie'
+import Cookies from 'universal-cookie';
+import Header from './Header';
+import Header2 from './Header2';
 
 ///// cookies start////
 const cookies = new Cookies();
@@ -18,18 +20,22 @@ const cookies = new Cookies();
 class cart extends Component {
   state = {
       dataproduk: [],
-      redirect: false
+      redirect: false,
+      iduser:'',
   }
   componentDidMount(){
-      axios.post(`http://localhost:8002/showcart`,{
-        user_id:cookies.get("login")
+    var userID = cookies.get("sessionid")
+    console.log('user id cart= ' +userID)  
+    axios.post(`http://localhost:8002/showcart`,{
+        user_id: userID
       })
       .then(
           /** Disini fungsi */
           (ambilData) => {
               console.log(ambilData.data);
               this.setState({
-                  dataproduk: ambilData.data
+                  dataproduk: ambilData.data,
+                  iduser:cookies.get("sessionid")
               });
           }
       )
@@ -39,15 +45,53 @@ class cart extends Component {
       axios.post('http://localhost:8002/deleteCart',{
           cartID:e
       })
-      window.location.reload()
-    //   .then ((hasil) => {
-    //     this.setState({
-    //         dataproduk: hasil.data
-    //     })
-    //   })
+      
+      .then ((hasil) => {
+          var del = hasil.data
+          if (del ===1){
+            var userID = cookies.get("sessionid")
+            console.log('user id cart= ' +userID)  
+            axios.post(`http://localhost:8002/showcart`,{
+                user_id: userID
+              })
+              .then(
+                  /** Disini fungsi */
+                  (ambilData) => {
+                      console.log(ambilData.data);
+                      this.setState({
+                          dataproduk: ambilData.data,
+                          
+                      });
+                  }
+              )
+          }
+        
+      })
     
       }
       
+      checkout(e){
+        // var namaproduk = namaproduk
+        // var harga = hargaproduk
+        // var user_id = cookies.get("sessionid")
+        var userid = e
+        // console.log(namaproduk)
+        // console.log(harga)
+        console.log(e)
+        
+        axios.post('http://localhost:8002/updatecheckout', 
+        {
+            // namaproduk:namaproduk,
+            // harga:harga,
+            userid: userid
+            
+        })
+        .then((response)=>{
+            if(response.data === "berhasil"){
+                this.setState({nextpage:true})
+            }
+        })
+      }
 //   deleteCart = (value) => {
 //     axios.post('http://localhost:8002/deleteCart', {
 //       cartID: value
@@ -77,44 +121,58 @@ class cart extends Component {
 //     })
 //   }
 
-  changeQuantity = (e, id) => {
+  changeQuantity = (e, id, hargaproduk) => {
     var userID = cookies.get('userSession');
-    axios.post('http://localhost:8005/updateCart', {
+    axios.post('http://localhost:8002/updateCart', {
       newQuantity: e,
       cartID: id,
-      userID: userID
-    }).then((response) => {
-      console.log(response.data);
-      var cartData = response.data[0];
-      var totalPerItem = response.data[1];
-      // console.log(totalPerItem);
+      userID: userID,
+      hargaproduk: hargaproduk
+    }).then((ambilData) => {
+        axios.post(`http://localhost:8002/showcart`,{
+        user_id: userID
+      })
+      .then(
+          /** Disini fungsi */
+          (ambilData) => {
+              console.log(ambilData.data);
+              this.setState({
+                  dataproduk: ambilData.data,
+                  iduser:cookies.get("sessionid")
+              });
+          }
+      )
 
-      this.setState({
-        detailCart: cartData,
-        totalPerItem: totalPerItem,
-      });
-
-      var totalPrice = 0;
-      var listPrice = this.state.totalPerItem;
-      for(var i=0; i < listPrice.length; i++){
-        totalPrice = totalPrice + listPrice[i].total_sub_price;
-      }
-      this.setState({
-        grandTotal: totalPrice
-      });
+    //   var totalPrice = 0;
+    //   var listPrice = this.state.totalPerItem;
+    //   for(var i=0; i < listPrice.length; i++){
+    //     totalPrice = totalPrice + listPrice[i].total_sub_price;
+    //   }
+    //   this.setState({
+    //     grandTotal: totalPrice
+    //   });
 
     })
 }
 
   render() 
-    {
-        // Logic dimulai disini
-        console.log(cookies.get("login") + " ini ada cookies login")
 
-        if(cookies.get("login")<"1" || cookies.get('login')=== undefined){
-            {this.state.redirect= true}
-            this.props.dispatch({type:'Login', kirim: "gagal bro palsu lu" })
+    {
+
+        let mycookie = cookies.get('sessionid');
+        let navigation = (mycookie !== undefined) ? <Header2 /> : <Header />
+
+        if(cookies.get('sessionid') === undefined) {
+            return <Redirect to="/Login"/>
         }
+
+        // Logic dimulai disini
+        
+
+        // if(cookies.get("login")<"1" || cookies.get('login')=== undefined){
+        //     {this.state.redirect= true}
+        //     this.props.dispatch({type:'Login', kirim: "gagal bro palsu lu" })
+        // }
 
         if(this.state.redirect){
             return <Redirect to="/"/>
@@ -123,21 +181,24 @@ class cart extends Component {
         // tidak berkaitan dgn yang di atas
         const hasil = this.state.dataproduk
         .map((isi, urutan) => 
-            {
+            {   
+                // var iduser= cookies.get('userSession');
                 var urut = urutan + 1;
                 var cartID = isi.cartID;
                 var namaproduk = isi.nama_produk;
                 var hargaproduk = isi.harga;
                 var quantity = isi.quantity;
                 // var totalharga = isi.total_price;
-                var totalharga = hargaproduk*quantity;
+                var totalharga = isi.total_harga;
+                console.log(totalharga)
                 
                 
                 return  <tr key={urutan} style={{textAlign: 'center'}}>
                             <td>{urut}</td>
                             <td>{namaproduk}</td>
                             <td>{hargaproduk}</td>
-                            <td><input type= "number" min={1} ref="quantity" defaultValue={quantity} onChange={(e) => this.changeQuantity(e.target.value)} /> </td>
+                            <td><input type= "number" min={1} ref="quantity" defaultValue={quantity} 
+                            onChange={(e) => this.changeQuantity(e.target.value, cartID, hargaproduk)} /> </td>
                             <td>{totalharga}</td>
                             <td>
                                 
@@ -147,9 +208,12 @@ class cart extends Component {
             }
         );
                 return (
-                    <div className="container" style={{minHeight:470}} >
-                    <center><h1>Cart</h1></center>
-
+                    <div>
+                    {navigation}
+                    <div className="container" style={{minHeight:590, textAlign:"center"}} >
+                    &nbsp;
+                    <h1>Cart</h1>
+                    &nbsp;
                         <table className="table table-striped table-hover table-bordered">
                             <thead>
                                 <tr style={{backgroundColor: ''}}>
@@ -165,6 +229,17 @@ class cart extends Component {
                                 {hasil}
                             </tbody>
                         </table>
+                        
+                        {/* <button onClick={()=>this.checkout(this.state.iduser)} className="btn btn-success btn-md"><Link to="/checkout" > Checkout</Link> </button> */}
+                        {/* <button href="/checkout" className="btn btn-success btn-md"> */}
+                        {/* <Link to="/checkout" className="btn btn-success btn-md"> Checkout</Link>  */}
+                        {/* Checkout */}
+                        {/* </button> */}
+                    </div>
+
+                    <div style={{textAlign: "center", padding: 20}}>
+                        <button onClick={()=>this.checkout(this.state.iduser)} className="btn btn-success btn-md"><i className="fa fa-trash"></i> Checkout</button>
+                    </div>
                     </div>
                 )
     }
