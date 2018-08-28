@@ -22,6 +22,7 @@ class Sidebar extends Component {
           
           </li>
           <li><Link to = "/allproduct"> <i className="icon-interface-windows" />Product </Link></li>
+          <li><Link to = "/invoice"> <i className="icon-interface-windows" />Invoice </Link></li>
           <li><a href="#exampledropdownDropdowninv" aria-expanded="false" data-toggle="collapse"> <i className="icon-interface-windows" />Invoice </a>
             <ul id="exampledropdownDropdowninv" className="collapse list-unstyled ">
               <li><Link to="/allinv">All Invoices</Link></li>

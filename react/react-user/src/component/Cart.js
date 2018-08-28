@@ -235,11 +235,13 @@ class cart extends Component {
                         {/* <Link to="/checkout" className="btn btn-success btn-md"> Checkout</Link>  */}
                         {/* Checkout */}
                         {/* </button> */}
+                        <div style={{textAlign: "center", padding: 20}}>
+                            <Link to="/checkout" className="btn btn-success btn-md"> Checkout</Link>
+                            {/* <button onClick={()=>this.checkout(this.state.iduser)} className="btn btn-success btn-md"><i className="fa fa-arrow-right"></i> Checkout</button> */}
+                        </div>
                     </div>
 
-                    <div style={{textAlign: "center", padding: 20}}>
-                        <button onClick={()=>this.checkout(this.state.iduser)} className="btn btn-success btn-md"><i className="fa fa-trash"></i> Checkout</button>
-                    </div>
+                    
                     </div>
                 )
     }

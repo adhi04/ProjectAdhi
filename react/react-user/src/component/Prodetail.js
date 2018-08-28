@@ -103,9 +103,10 @@ class Prodetail extends Component {
                 <h2>{namaproduk}</h2>
                 <h4 className="price">Harga: <span>Rp. {harga}</span></h4>
               </div>
-              <div className="col-md-12">
+              {/* <div className="col-md-12">
               <button onClick={()=>this.buy(namaproduk,harga)} className="btn btn-danger btn-md"> Add to Cart</button> 
-              </div>
+              </div> */}
+              <input type="hidden" ref="quantity" value={1}/>
               <div className="col-md-12">
               <Link to="/cart" onClick={()=>this.buy(namaproduk,harga)} className="btn btn-success btn-md">
                 Buy

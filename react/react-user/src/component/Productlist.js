@@ -33,17 +33,17 @@ class Productlist extends Component {
     console.log(harga)
     console.log(user_id)
     
-    axios.post('http://localhost:8002/updatecart', 
+    axios.post('http://localhost:8002/insertcart', 
     {
         namaproduk:namaproduk,
         harga:harga,
         user_id: user_id
     })
-    .then((response)=>{
-        if(response.data === "berhasil"){
-            this.setState({nextpage:true})
-        }
-    })
+    // .then((response)=>{
+    //     if(response.data === "berhasil"){
+    //         this.setState({nextpage:true})
+    //     }
+    // })
   }
   render() {
 

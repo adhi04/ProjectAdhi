@@ -132,7 +132,7 @@ class AllProduct extends Component {
                     </div>
                   </div>
                   {/* Item */}
-                  <div className="col-xl-3 col-sm-6">
+                   <div className="col-xl-3 col-sm-6">
                     <div className="item d-flex align-items-center">
                       <div className="icon bg-orange"><i className="icon-check" /></div>
                       <div className="title"><span>Open<br />Cases</span>
@@ -149,19 +149,20 @@ class AllProduct extends Component {
             {/* Dashboard Header Section    */}
             <section className="dashboard-header">
               <div className="container-fluid">
-
-              <div className="row bg-white has-shadow">
-
+              <div style={{textAlign:"center", padding:20}}>
+              <Link to="/tambahdata" className="btn btn-primary btn-lg">Add Invoice </Link>
+              </div>
+              <div className="row bg-white has-shadow" >
                 <table className="table table-striped table-hover table-bordered">
                   <thead>
                       <tr>
-                          <th style={{textAlign: 'center'}}>Nomor</th>
+                          <th style={{textAlign: 'center'}}>Invoice Number</th>
                           <th style={{textAlign: 'center'}}>Nama Produk</th>
-                          <th style={{textAlign: 'center'}}>Kategori Makanan</th>
-                          <th style={{textAlign: 'center'}}>Harga Produk</th>
-                          <th style={{textAlign: 'center'}}>Deskripsi Produk</th>
-                          <th style={{textAlign: 'center'}}>Foto Produk</th>
-                          <th style={{textAlign: 'center'}}>Actions &nbsp;&nbsp;&nbsp;<Link to="/tambahdata" className="btn btn-primary btn-sm">Add</Link></th>
+                          <th style={{textAlign: 'center'}}>Customer</th>
+                          <th style={{textAlign: 'center'}}>Total Belanja</th>
+                          <th style={{textAlign: 'center'}}>Tanggal</th>
+                          <th style={{textAlign: 'center'}}>Status</th>
+                          <th style={{textAlign: 'center'}}>Actions &nbsp;&nbsp;&nbsp;</th>
                       </tr>
                   </thead>
                   <tbody>

@@ -458,7 +458,7 @@ app.post('/insertcart', (req,res) =>{
     
     
 
-    var sql= `INSERT INTO cart SET nama_produk="${namaproduk}", harga="${harga}", user_id="${userid}", total_harga="${harga}" `
+    var sql= `INSERT INTO cart SET nama_produk="${namaproduk}", harga="${harga}", user_id="${userid}", total_harga="${harga}", quantity="1" `
     
     dbs.query(sql,(err, result) =>{
     if (err) throw err
@@ -500,9 +500,9 @@ app.post(`/showcart`, (req,res) =>
 
 
     // var sql= 'SELECT * FROM `cart` JOIN produk_samid ON cart.product_id=produk_samid.id WHERE cart.user_id=?'
-    var sql= 'SELECT * FROM `cart` WHERE user_id=?'
+    var sql= `SELECT * FROM cart WHERE user_id="${user_id}"`;
     
-    dbs.query(sql,user_id,(err, result) =>{
+    dbs.query(sql, (err, result) =>{
     if (err) throw err
     else{
         res.send(result)
@@ -646,6 +646,75 @@ app.get('/jumlahuser', (req,res) => {
     });
 });
 
+app.get('/ambilDaftarBank', (req, res) => {
+    var sql = `SELECT * FROM bank`;
+    dbs.query(sql, (err, result) => {
+        if(err){
+            throw err;
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.post('/insertinvoice',(req,res) => {
+    var status= 1;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
+    var username = req.body.username;
+    var email = req.body.email;
+    var adress = req.body.adress;
+    var negara = req.body.negara;
+    var kota = req.body.kota;
+    var zip = req.body.zip;
+    var bank = req.body.bank;
+    var cart = req.body.listCart;
+
+    var sql= `SELECT invoice_number FROM invoice`
+    dbs.query(sql, (err, result) => {
+        if (err) {
+            console.log(err, 'error di invoice')
+        }else{
+            var length = result.length;
+            var lastorderID = 0;
+            (length === 0) ? lastorderID = 0: lastorderID = parseInt(result[length-1].invoice_number);
+            var orderID = lastorderID + 1;
+            var orders = '';
+
+            if (orderID<10) orders = orders+ '0000' + orderID
+            else if (orderID>=10 && orderID<100) orders = orders+ '000' + orderID
+            else if (orderID>=100 && orderID<1000) orders = orders+ '00' + orderID
+            if (orderID>=1000 && orderID<10000) orders = orders+ '0' + orderID
+            else orders = orders + orderID
+            
+            var counter = 0
+
+            for(var i=0; i<cart.length; i++){
+                var productName = cart[i].namaproduk
+                var quantity = cart[i].quantity
+                var userid = cart[i].user_id
+                var totalPerItem = (cart[i].quantity + cart[i].harga)
+                // var delivery = req.body.delivery
+                var sql = `INSERT INTO invoice (invoice_number, status, product_name, quantity, 
+                    shipping_adress, user_id, user_firstname, user_lastname, total, bank_option)
+                    Values ("${orders}", "${status}", "${productName}", "${quantity}", 
+                    "${adress}", "${userid}", "${firstname}", "${lastname}", "${totalPerItem}", "${bank}" );`
+                sql+= `UPDATE cart SET statusID= "1" WHERE user_id="${userid}" `;
+
+                dbs.query(sql, (err, result) => {
+                    if(err){
+                        throw err;
+                    } else{
+                        counter++
+                        if (counter === cart.length){
+                            res.send('1')
+                        }
+                    }
+                })
+            }
+        }
+    })
+})
 
 
 app.listen(port, () => {

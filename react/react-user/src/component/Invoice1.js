@@ -110,29 +110,17 @@ class Invoice extends Component {
                 console.log(totalharga)
              
                 return <div>
-                  
-                        <table className="table table-condensed">
-                      <thead>
-                        <tr>
-                          <td><strong>Produk</strong></td>
-                          <td className="text-center"><strong /></td>
-                          <td className="text-center"><strong>Quantity</strong></td>
-                          <td className="text-right"><strong>Price</strong></td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
+                  <tr>
                           <td>{namaproduk}</td>
                           <td className="text-center" />
                           <td className="text-center">{quantity}</td>
                           <td className="text-right">{hargaproduk}</td>
-                        </tr>
-                        
-                        <tr>
+                  </tr>
+                  <tr>
                           <td className="thick-line" />
                           <td className="thick-line" />
                           <td className="thick-line text-center"><strong>Subtotal</strong></td>
-                          <td className="thick-line text-right">{totalharga}</td>
+                          <td className="thick-line text-right">Rp. {totalharga}</td>
                         </tr>
                         <tr>
                           <td className="no-line" />
@@ -144,16 +132,13 @@ class Invoice extends Component {
                           <td className="no-line" />
                           <td className="no-line" />
                           <td className="no-line text-center"><strong>Total</strong></td>
-                          <td className="no-line text-right">Rp.{totalharga+10000}</td>
+                          <td className="no-line text-right">Rp. {totalharga+10000}</td>
                         </tr>
-                      </tbody>
-                    </table>
                 </div>
             })
 
     return (
         <div>
-          {navigation}
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -165,6 +150,22 @@ class Invoice extends Component {
                 <h1 style={{color: 'brown'}}>Invoice</h1><h3 className="text-right">Order Id # hxs1234567</h3>
               </div>
               <hr />
+              {/* <div className="row"> */}
+                {/* <div className="col-md-6">
+                  <address>
+                    <strong>Billed To:</strong><br />
+                    Alfi Sulistiani<br />
+                    alfi123@gmail.com
+                  </address>
+                </div>
+                <div className="col-md-6 text-right">
+                  <address>
+                    <strong>Shipped To:</strong><br />
+                    Gang Asri No. 4 Rt 10/07 Kec. Makasar<br />
+                    Jakarta Timur<br />
+                    Indonesia, 13610
+                  </address>
+                </div> */}
                 {datauser}
               {/* </div> */}
               <div className="row">
@@ -191,7 +192,50 @@ class Invoice extends Component {
                 </div>
                 <div className="panel-body">
                   <div className="table-responsive">
-                    {hasil}
+                    <table className="table table-condensed">
+                      <thead>
+                        <tr>
+                          <td><strong>Produk</strong></td>
+                          <td className="text-center"><strong /></td>
+                          <td className="text-center"><strong>Quantity</strong></td>
+                          <td className="text-right"><strong>Price</strong></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* foreach ($order->lineItems as $line) or some such thing here */}
+                        {/* <tr>
+                          <td>Anjing Cihuahua</td>
+                          <td className="text-center" />
+                          <td className="text-center">1 Ekor</td>
+                          <td className="text-right">Rp. 2.500.000</td>
+                        </tr> */}
+                        {/* <tr>
+                          <td>Booking Test Rider</td>
+                          <td className="text-center" />
+                          <td className="text-center" />
+                          <td className="text-right" />
+                        </tr> */}
+                        {hasil}
+                        <tr>
+                          <td className="thick-line" />
+                          <td className="thick-line" />
+                          <td className="thick-line text-center"><strong>Subtotal</strong></td>
+                          <td className="thick-line text-right">Rp. 2.500.000</td>
+                        </tr>
+                        <tr>
+                          <td className="no-line" />
+                          <td className="no-line" />
+                          <td className="no-line text-center"><strong>Shipping</strong></td>
+                          <td className="no-line text-right">Rp. 100.000</td>
+                        </tr>
+                        <tr>
+                          <td className="no-line" />
+                          <td className="no-line" />
+                          <td className="no-line text-center"><strong>Total</strong></td>
+                          <td className="no-line text-right">Rp. 2.600.000</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
